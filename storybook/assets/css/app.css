@@ -1,0 +1,14 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import '../../../assets/css/bem.css';
+@import 'tailwindcss/utilities';
+
+@layer utilities {
+  * {
+    font-family: system-ui;
+  }
+}
+
+/* .psb {
+  @apply dark:!bg-black dark:!text-white;
+} */
