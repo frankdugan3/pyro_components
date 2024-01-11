@@ -46,7 +46,7 @@ As long as Elixir is already installed:
 
 ```sh
 git clone git@github.com:frankdugan3/pyro_components.git
-cd pyro
+cd pyro_components
 mix setup
 ```
 
