@@ -99,41 +99,6 @@ defmodule PyroComponents.Core do
   end
 
   @doc """
-  Renders a back navigation link.
-
-  ## Examples
-
-      <.back navigate={~p"/posts"}>Back to posts</.back>
-      <.back icon_name="hero-arrow-left" navigate={~p"/"}>
-        Go back to the about page.
-      </.back>
-  """
-
-  attr :overrides, :list, default: nil, doc: @overrides_attr_doc
-
-  attr :icon_name, :string,
-    overridable: true,
-    required: true,
-    doc: "the name of the icon; see `icon/1` for details"
-
-  attr :navigate, :any, required: true
-  attr :class, :css_classes, overridable: true
-  attr :icon_class, :css_classes, overridable: true
-
-  slot :inner_block, required: true
-
-  def back(assigns) do
-    assigns = assign_overridables(assigns)
-
-    ~H"""
-    <.link navigate={@navigate} class={@class}>
-      <.icon overrides={@overrides} name={@icon_name} class={@icon_class} />
-      <%= render_slot(@inner_block) %>
-    </.link>
-    """
-  end
-
-  @doc """
   Renders a button.
 
   Supports:
@@ -179,7 +144,6 @@ defmodule PyroComponents.Core do
     doc: "type of the button"
 
   attr :color, :string, overridable: true, required: true, doc: "the color of the button"
-  attr :shape, :string, overridable: true, required: true, doc: "shape of the button"
   attr :size, :string, overridable: true, required: true, doc: "the size of the button"
   attr :variant, :string, overridable: true, required: true, doc: "style of button"
   attr :class, :css_classes, overridable: true
@@ -1407,7 +1371,6 @@ defmodule PyroComponents.Core do
     ~H"""
     <div id={@id} {@rest}>
       <div id={"#{@id}-overlay"} class={@overlay_class} aria-hidden="true"></div>
-
       <div class={@wrapper_class} role="dialog" aria-modal="true">
         <div
           id={"#{@id}-content"}
@@ -1431,9 +1394,9 @@ defmodule PyroComponents.Core do
                 phx-click={
                   apply(@hide_js, [%JS{}, @id, @origin, @close_even_name, @close_slide_over_target])
                 }
+                aria-label={gettext("close")}
                 class={@header_close_button_class}
               >
-                <div class="sr-only">Close</div>
                 <.icon class={@close_icon_class} name={@close_icon_name} />
               </button>
             </div>
@@ -1527,7 +1490,7 @@ defmodule PyroComponents.Core do
       <thead class={@thead_class}>
         <tr>
           <th :for={col <- @col} class={@th_label_class}><%= col[:label] %></th>
-          <th class={@th_action_class}><span class="sr-only"><%= gettext("Actions") %></span></th>
+          <th class={@th_action_class} aria-label={gettext("actions")}></th>
         </tr>
       </thead>
       <tbody
