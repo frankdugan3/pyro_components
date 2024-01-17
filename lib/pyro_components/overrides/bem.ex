@@ -36,19 +36,16 @@ defmodule PyroComponents.Overrides.BEM do
   # Specify flash variants. Defaults to `~w[info error warning success]`
   config :pyro_components, :bem_flash_variants, ["danger", "warning"]
 
-  # Specify size variants. Defaults to `~w[xs sm md lg xl]`
+  # Specify size variants. Defaults to `~w[xs sm base lg xl]`
   config :pyro_components, :bem_size_variants, ["normal", "huge"]
 
-  # Specify button variants. Defaults to `~w[solid inverted outline]`
-  config :pyro_components, :bem_size_variants, ["normal", "ghost"]
-
-  # Specify button shape variants. Defaults to `~w[rounded square pill]`
-  config :pyro_components, :bem_size_variants, ["normal", "obtuse"]
+  # Specify button variants. Defaults to `~w[solid outline]`
+  config :pyro_components, :bem_button_variants, ["normal", "ghost"]
   ```
 
   ## Using with Tailwind
 
-  The classes are built dynamically, so if you want to use Tailwind, you will need to implement your styles *without* the layer directive to ensure they are always included, and you will need to ensure you put them before the utilities import for correct precedence:
+  The class names are built dynamically, so if you want to use Tailwind, you will need to implement your styles *without* the layer directive to ensure they are always included, and you will need to ensure you put them before the utilities import for correct precedence:
 
   ```css
   @tailwind base;
@@ -82,13 +79,13 @@ defmodule PyroComponents.Overrides.BEM do
                     :bem_flash_variants,
                     ~w[info error warning success]
                   )
-  @size_variants Application.compile_env(:pyro_components, :bem_size_variants, ~w[xs sm md lg xl])
+  @size_variants Application.compile_env(:pyro_components, :bem_size_variants, ~w[xs sm base lg xl])
+
   @button_variants Application.compile_env(
                      :pyro_components,
                      :bem_button_variants,
-                     ~w[solid inverted outline]
+                     ~w[solid outline]
                    )
-  @button_shapes Application.compile_env(:pyro_components, :bem_button_shapes, ~w[rounded square pill])
 
   ##############################################################################
   ####    C O R E    C O M P O N E N T S
@@ -99,13 +96,6 @@ defmodule PyroComponents.Overrides.BEM do
     set :replace, false
   end
 
-  @prefixed_back @prefix <> "back"
-  override PyroComponents.Core, :back do
-    set :class, @prefixed_back
-    set :icon_class, @prefixed_back <> "__icon"
-    set :icon_name, "hero-chevron-left-solid"
-  end
-
   @prefixed_button @prefix <> "button"
   @button_icon_class @prefixed_button <> "__icon"
   override PyroComponents.Core, :button do
@@ -114,21 +104,24 @@ defmodule PyroComponents.Overrides.BEM do
     set :ping_animation_class, @prefixed_button <> "__ping_animation"
     set :icon_class, @button_icon_class
     set :colors, @color_variants
-    set :color, "sky"
+    set :color, "slate"
     set :variant, "solid"
     set :variants, @button_variants
-    set :shape, "rounded"
-    set :shapes, @button_shapes
-    set :size, "md"
+    set :size, "base"
     set :sizes, @size_variants
   end
 
   def button_class(passed_assigns) do
+    size =
+      case passed_assigns[:size] do
+        "base" -> nil
+        size -> @prefixed_button <> "--" <> size
+      end
+
     [
       @prefixed_button,
-      @prefixed_button <> "--" <> passed_assigns[:size],
+      size,
       @prefixed_button <> "--" <> passed_assigns[:color],
-      @prefixed_button <> "--" <> passed_assigns[:shape],
       @prefixed_button <> "--" <> passed_assigns[:variant]
     ]
   end
@@ -160,12 +153,10 @@ defmodule PyroComponents.Overrides.BEM do
     set :class, &__MODULE__.button_class/1
     set :icon_class, @button_icon_class
     set :colors, @color_variants
-    set :color, "sky"
+    set :color, "slate"
     set :variant, "solid"
     set :variants, @button_variants
-    set :shape, "rounded"
-    set :shapes, @button_shapes
-    set :size, "md"
+    set :size, "base"
     set :sizes, @size_variants
     set :message, "Copied! 📋"
     set :ttl, 3_000
@@ -220,11 +211,11 @@ defmodule PyroComponents.Overrides.BEM do
     end
   end
 
-  def flash_show_js(js, selector) do
+  def flash_show_js(js \\ %JS{}, selector) do
     JS.show(js, to: selector)
   end
 
-  def flash_hide_js(js, selector) do
+  def flash_hide_js(js \\ %JS{}, selector) do
     JS.hide(js, to: selector)
   end
 
@@ -277,7 +268,7 @@ defmodule PyroComponents.Overrides.BEM do
     set :hide_js, &__MODULE__.modal_hide_js/2
   end
 
-  def modal_show_js(js, id) do
+  def modal_show_js(js \\ %JS{}, id) do
     js
     |> JS.show(to: "##{id}")
     |> JS.show(to: "##{id}-bg")
@@ -285,7 +276,7 @@ defmodule PyroComponents.Overrides.BEM do
     |> JS.focus_first(to: "##{id}-content")
   end
 
-  def modal_hide_js(js, id) do
+  def modal_hide_js(js \\ %JS{}, id) do
     js
     |> JS.hide(to: "##{id}-bg")
     |> JS.hide(to: "##{id}-container")
@@ -305,17 +296,23 @@ defmodule PyroComponents.Overrides.BEM do
   @prefixed_progress @prefix <> "progress"
   override PyroComponents.Core, :progress do
     set :class, &__MODULE__.progress_class/1
-    set :size, "md"
+    set :size, "base"
     set :sizes, @size_variants
-    set :color, "sky"
+    set :color, "slate"
     set :colors, @color_variants
   end
 
   def progress_class(passed_assigns) do
+    size =
+      case passed_assigns[:size] do
+        "base" -> nil
+        size -> @prefixed_progress <> "--" <> size
+      end
+
     case_result =
       case passed_assigns[:color] do
         "error" -> "red"
-        "info" -> "sky"
+        "info" -> "slate"
         "warning" -> "yellow"
         "success" -> "green"
         color -> color
@@ -323,8 +320,6 @@ defmodule PyroComponents.Overrides.BEM do
 
     color =
       then(case_result, &(@prefixed_progress <> "--" <> &1))
-
-    size = @prefixed_progress <> "--" <> passed_assigns[:size]
 
     [@prefixed_progress, color, size]
   end
@@ -337,9 +332,9 @@ defmodule PyroComponents.Overrides.BEM do
 
   @prefixed_slide_over @prefix <> "slide_over"
   override PyroComponents.Core, :slide_over do
-    set :class, @prefixed_slide_over
+    set :class, &__MODULE__.slide_over_class/1
     set :overlay_class, @prefixed_slide_over <> "__overlay"
-    set :wrapper_class, @prefixed_slide_over <> "__wrapper"
+    set :wrapper_class, &__MODULE__.slide_over_wrapper_class/1
     set :header_class, @prefixed_slide_over <> "__header"
     set :header_inner_class, @prefixed_slide_over <> "__header_inner"
     set :header_title_class, @prefixed_slide_over <> "__header_title"
@@ -349,16 +344,87 @@ defmodule PyroComponents.Overrides.BEM do
     set :close_icon_name, "hero-x-mark-solid"
     set :origin, "left"
     set :origins, ~w[left right top bottom]
-    set :max_width, "md"
+    set :max_width, "base"
     set :max_widths, ~w[sm md lg xl 2xl full]
     set :hide_js, &__MODULE__.slide_over_hide_js/5
   end
 
-  def slide_over_hide_js(js, id, _origin, close_event_name, close_slide_over_target) do
+  def slide_over_class(passed_assigns) do
+    [
+      "w-full max-h-full overflow-auto",
+      "bg-white dark:bg-gradient-to-tr dark:from-slate-900 dark:to-slate-800 text-slate-900 dark:text-white",
+      slide_over_width_class(passed_assigns),
+      passed_assigns[:origin] == "left" && "transition translate-x-0",
+      passed_assigns[:origin] == "right" && "transition translate-x-0 absolute right-0 inset-y-0",
+      passed_assigns[:origin] == "top" && "transition translate-y-0 absolute inset-x-0",
+      passed_assigns[:origin] == "bottom" &&
+        "transition translate-y-0 absolute inset-x-0 bottom-0",
+      passed_assigns[:class]
+    ]
+  end
+
+  def slide_over_width_class(%{origin: origin, max_width: max_width}) do
+    case origin do
+      x when x in ["left", "right"] ->
+        case max_width do
+          "sm" -> "max-w-sm"
+          "md" -> "max-w-xl"
+          "lg" -> "max-w-3xl"
+          "xl" -> "max-w-5xl"
+          "2xl" -> "max-w-7xl"
+          "full" -> "max-w-full"
+        end
+
+      x when x in ["top", "bottom"] ->
+        ""
+    end
+  end
+
+  def slide_over_wrapper_class(passed_assigns) do
+    [
+      "fixed inset-0 z-50 flex overflow-hidden transform",
+      passed_assigns[:origin] == "left" && "mr-10",
+      passed_assigns[:origin] == "right" && "ml-10",
+      passed_assigns[:origin] == "top" && "mb-10",
+      passed_assigns[:origin] == "bottom" && "mt-10",
+      passed_assigns[:wrapper_class]
+    ]
+  end
+
+  def slide_over_hide_js(js \\ %JS{}, id, origin, close_event_name, close_slide_over_target) do
+    origin_class =
+      case origin do
+        x when x in ["left", "right"] -> "translate-x-0"
+        x when x in ["top", "bottom"] -> "translate-y-0"
+      end
+
+    destination_class =
+      case origin do
+        "left" -> "-translate-x-full"
+        "right" -> "translate-x-full"
+        "top" -> "-translate-y-full"
+        "bottom" -> "translate-y-full"
+      end
+
     js =
       js
-      |> JS.hide(to: "##{id}-overlay")
-      |> JS.hide(to: "##{id}-content")
+      |> JS.remove_class("overflow-hidden", to: "body")
+      |> JS.hide(
+        transition: {
+          "ease-in duration-200",
+          "opacity-100",
+          "opacity-0"
+        },
+        to: "##{id}-overlay"
+      )
+      |> JS.hide(
+        transition: {
+          "ease-in duration-200",
+          origin_class,
+          destination_class
+        },
+        to: "##{id}-content"
+      )
 
     if close_slide_over_target do
       JS.push(js, close_event_name, close_slide_over_target)
@@ -370,14 +436,20 @@ defmodule PyroComponents.Overrides.BEM do
   @prefixed_spinner @prefix <> "spinner"
   override PyroComponents.Core, :spinner do
     set :class, &__MODULE__.spinner_class/1
-    set :size, "md"
+    set :size, "base"
     set :sizes, @size_variants
   end
 
   def spinner_class(passed_assigns) do
+    size =
+      case passed_assigns[:size] do
+        "base" -> nil
+        size -> @prefixed_spinner <> "--" <> size
+      end
+
     [
       @prefixed_spinner,
-      @prefixed_spinner <> "--" <> passed_assigns[:size],
+      size,
       hidden: !passed_assigns[:show]
     ]
   end
@@ -419,21 +491,34 @@ defmodule PyroComponents.Overrides.BEM do
     set :footer_class, @prefixed_data_table <> "__footer"
   end
 
-  @prefixed_data_table_sort @prefix <> "data_table_sort"
-  override PyroComponents.DataTable, :sort do
-    set :class, @prefixed_data_table_sort
-    set :btn_class, @prefixed_data_table_sort <> "__btn"
+  override PyroComponents.DataTable, :th do
+    set :class, &__MODULE__.data_table_th_class/1
+    set :btn_class, &__MODULE__.data_table_sort_btn_class/1
   end
 
-  @prefixed_data_table_cell @prefix <> "data_table_cell"
+  def data_table_th_class(passed_assigns) do
+    if passed_assigns[:sort_key] == nil do
+      @prefixed_data_table <> "__th--unsortable"
+    else
+      @prefixed_data_table <> "__th--sortable"
+    end
+  end
+
+  def data_table_sort_btn_class(passed_assigns) do
+    if passed_assigns[:direction] == nil do
+      @prefixed_data_table <> "__sort_btn--inactive"
+    else
+      @prefixed_data_table <> "__sort_btn--active"
+    end
+  end
+
   override PyroComponents.DataTable, :cell do
-    set :class, @prefixed_data_table_cell
+    set :class, @prefixed_data_table <> "__cell"
   end
 
-  @prefixed_data_table_sort_icon @prefix <> "data_table_sort_icon"
   override PyroComponents.DataTable, :sort_icon do
-    set :class, @prefixed_data_table_sort_icon
-    set :index_class, @prefixed_data_table_sort_icon <> "__index"
+    set :class, @prefixed_data_table <> "__sort_icon"
+    set :index_class, @prefixed_data_table <> "__sort_icon_index"
     set :sort_icon_name, &__MODULE__.data_table_sort_icon_name/1
   end
 
@@ -464,5 +549,15 @@ defmodule PyroComponents.Overrides.BEM do
     set :option_label_key, :label
     set :option_value_key, :id
     set :prompt, "Search options"
+  end
+
+  def autocomplete_listbox_option_class(passed_assigns) do
+    base = @prefixed_autocomplete <> "__listbox_option"
+
+    if passed_assigns[:results] == [] do
+      base
+    else
+      [base, "has-results"]
+    end
   end
 end

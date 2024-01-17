@@ -55,7 +55,7 @@ defmodule PyroComponents.DataTable do
     <table id={@id} class={@class}>
       <thead class={@header_class}>
         <tr>
-          <.sort :for={col <- @col} table_id={@id} sort={@sort} {col} />
+          <.th :for={col <- @col} table_id={@id} sort={@sort} {col} />
         </tr>
       </thead>
       <tbody class={@body_class}>
@@ -188,7 +188,7 @@ defmodule PyroComponents.DataTable do
   attr :btn_class, :css_classes, overridable: true
   attr :sort_key, :atom, default: nil
 
-  defp sort(%{sort_key: sort_key} = assigns) when not is_nil(sort_key) do
+  defp th(%{sort_key: sort_key} = assigns) when not is_nil(sort_key) do
     sort = assigns[:sort]
 
     {direction, position} =
@@ -223,7 +223,7 @@ defmodule PyroComponents.DataTable do
     """
   end
 
-  defp sort(assigns) do
+  defp th(assigns) do
     assigns = assign_overridables(assigns)
 
     ~H"""

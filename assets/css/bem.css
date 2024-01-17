@@ -1,0 +1,701 @@
+/* Core.a */
+.pyro_a {
+  @apply font-black text-slate-900 dark:text-white hover:text-sky-500;
+}
+
+/* Core.button */
+.pyro_button {
+  @apply relative text-center font-medium inline-block cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 appearance-none select-none whitespace-nowrap active:opacity-50 focus:outline-none focus:ring-4 border-solid border-2 rounded-lg;
+  /* base size */
+  @apply px-5 py-2.5 text-sm;
+}
+/* sizes */
+.pyro_button--xs {
+  @apply px-3 py-2 text-xs;
+}
+.pyro_button--sm {
+  @apply px-3 py-2 text-sm;
+}
+.pyro_button--lg {
+  @apply px-5 py-3 text-base;
+}
+.pyro_button--xl {
+  @apply px-6 py-3.5 text-base;
+}
+/* colors -- set all colored options, then override with variant */
+.pyro_button--slate {
+  @apply text-slate-500 border-slate-500 bg-slate-500;
+}
+.pyro_button--gray {
+  @apply text-gray-500 border-gray-500 bg-gray-500;
+}
+.pyro_button--zinc {
+  @apply text-zinc-500 border-zinc-500 bg-zinc-500;
+}
+.pyro_button--neutral {
+  @apply text-neutral-500 border-neutral-500 bg-neutral-500;
+}
+.pyro_button--stone {
+  @apply text-stone-500 border-stone-500 bg-stone-500;
+}
+.pyro_button--red {
+  @apply text-red-500 border-red-500 bg-red-500;
+}
+.pyro_button--orange {
+  @apply text-orange-500 border-orange-500 bg-orange-500;
+}
+.pyro_button--amber {
+  @apply text-amber-500 border-amber-500 bg-amber-500;
+}
+.pyro_button--yellow {
+  @apply text-yellow-500 border-yellow-500 bg-yellow-500;
+}
+.pyro_button--lime {
+  @apply text-lime-500 border-lime-500 bg-lime-500;
+}
+.pyro_button--green {
+  @apply text-green-500 border-green-500 bg-green-500;
+}
+.pyro_button--emerald {
+  @apply text-emerald-500 border-emerald-500 bg-emerald-500;
+}
+.pyro_button--teal {
+  @apply text-teal-500 border-teal-500 bg-teal-500;
+}
+.pyro_button--cyan {
+  @apply text-cyan-500 border-cyan-500 bg-cyan-500;
+}
+.pyro_button--sky {
+  @apply text-sky-500 border-sky-500 bg-sky-500;
+}
+.pyro_button--blue {
+  @apply text-blue-500 border-blue-500 bg-blue-500;
+}
+.pyro_button--indigo {
+  @apply text-indigo-500 border-indigo-500 bg-indigo-500;
+}
+.pyro_button--violet {
+  @apply text-violet-500 border-violet-500 bg-violet-500;
+}
+.pyro_button--purple {
+  @apply text-purple-500 border-purple-500 bg-purple-500;
+}
+.pyro_button--fuchsia {
+  @apply text-fuchsia-500 border-fuchsia-500 bg-fuchsia-500;
+}
+.pyro_button--pink {
+  @apply text-pink-500 border-pink-500 bg-pink-500;
+}
+.pyro_button--rose {
+  @apply text-rose-500 border-rose-500 bg-rose-500;
+}
+/* override unneeded colors for variants */
+.pyro_button--outline {
+  @apply bg-transparent;
+}
+.pyro_button--solid {
+  @apply text-white;
+}
+/* TODO: Need a better ping color plan */
+.pyro_button__ping,
+.pyro_button__ping_animation {
+  @apply block absolute rounded-full top-0 right-0 w-3 h-3 bg-red-500;
+}
+.pyro_button__ping_animation {
+  @apply animate-ping;
+}
+
+/* Core.code */
+.pyro_code {
+  @apply whitespace-pre-wrap p-4 rounded relative;
+}
+.pyro_code__copy {
+  @apply absolute top-1 right-1;
+}
+
+/* Core.error */
+.pyro_error {
+  @apply phx-no-feedback:hidden flex gap-1 text-sm leading-6 text-red-600 dark:text-red-500;
+}
+.pyro_error__icon {
+  @apply h-5 w-5 flex-none inline;
+}
+
+/* Core.flash */
+.pyro_flash {
+  @apply hidden w-80 sm:w-96 rounded p-3 relative z-50 ring-1 shadow-md shadow-slate-900/5 dark:shadow-slate-300/5;
+}
+.pyro_flash--slate {
+  @apply bg-slate-100 text-slate-900 ring-slate-500 fill-slate-900 dark:bg-slate-900 dark:text-slate-100 dark:ring-slate-500 dark:fill-slate-100;
+}
+.pyro_flash--gray {
+  @apply bg-gray-100 text-gray-900 ring-gray-500 fill-gray-900 dark:bg-gray-900 dark:text-gray-100 dark:ring-gray-500 dark:fill-gray-100;
+}
+.pyro_flash--zinc {
+  @apply bg-zinc-100 text-zinc-900 ring-zinc-500 fill-zinc-900 dark:bg-zinc-900 dark:text-zinc-100 dark:ring-zinc-500 dark:fill-zinc-100;
+}
+.pyro_flash--neutral {
+  @apply bg-neutral-100 text-neutral-900 ring-neutral-500 fill-neutral-900 dark:bg-neutral-900 dark:text-neutral-100 dark:ring-neutral-500 dark:fill-neutral-100;
+}
+.pyro_flash--stone {
+  @apply bg-stone-100 text-stone-900 ring-stone-500 fill-stone-900 dark:bg-stone-900 dark:text-stone-100 dark:ring-stone-500 dark:fill-stone-100;
+}
+.pyro_flash--red {
+  @apply bg-red-100 text-red-900 ring-red-500 fill-red-900 dark:bg-red-900 dark:text-red-100 dark:ring-red-500 dark:fill-red-100;
+}
+.pyro_flash--orange {
+  @apply bg-orange-100 text-orange-900 ring-orange-500 fill-orange-900 dark:bg-orange-900 dark:text-orange-100 dark:ring-orange-500 dark:fill-orange-100;
+}
+.pyro_flash--amber {
+  @apply bg-amber-100 text-amber-900 ring-amber-500 fill-amber-900 dark:bg-amber-900 dark:text-amber-100 dark:ring-amber-500 dark:fill-amber-100;
+}
+.pyro_flash--yellow {
+  @apply bg-yellow-100 text-yellow-900 ring-yellow-500 fill-yellow-900 dark:bg-yellow-900 dark:text-yellow-100 dark:ring-yellow-500 dark:fill-yellow-100;
+}
+.pyro_flash--lime {
+  @apply bg-lime-100 text-lime-900 ring-lime-500 fill-lime-900 dark:bg-lime-900 dark:text-lime-100 dark:ring-lime-500 dark:fill-lime-100;
+}
+.pyro_flash--green {
+  @apply bg-green-100 text-green-900 ring-green-500 fill-green-900 dark:bg-green-900 dark:text-green-100 dark:ring-green-500 dark:fill-green-100;
+}
+.pyro_flash--emerald {
+  @apply bg-emerald-100 text-emerald-900 ring-emerald-500 fill-emerald-900 dark:bg-emerald-900 dark:text-emerald-100 dark:ring-emerald-500 dark:fill-emerald-100;
+}
+.pyro_flash--teal {
+  @apply bg-teal-100 text-teal-900 ring-teal-500 fill-teal-900 dark:bg-teal-900 dark:text-teal-100 dark:ring-teal-500 dark:fill-teal-100;
+}
+.pyro_flash--cyan {
+  @apply bg-cyan-100 text-cyan-900 ring-cyan-500 fill-cyan-900 dark:bg-cyan-900 dark:text-cyan-100 dark:ring-cyan-500 dark:fill-cyan-100;
+}
+.pyro_flash--sky {
+  @apply bg-sky-100 text-sky-900 ring-sky-500 fill-sky-900 dark:bg-sky-900 dark:text-sky-100 dark:ring-sky-500 dark:fill-sky-100;
+}
+.pyro_flash--blue {
+  @apply bg-blue-100 text-blue-900 ring-blue-500 fill-blue-900 dark:bg-blue-900 dark:text-blue-100 dark:ring-blue-500 dark:fill-blue-100;
+}
+.pyro_flash--indigo {
+  @apply bg-indigo-100 text-indigo-900 ring-indigo-500 fill-indigo-900 dark:bg-indigo-900 dark:text-indigo-100 dark:ring-indigo-500 dark:fill-indigo-100;
+}
+.pyro_flash--violet {
+  @apply bg-violet-100 text-violet-900 ring-violet-500 fill-violet-900 dark:bg-violet-900 dark:text-violet-100 dark:ring-violet-500 dark:fill-violet-100;
+}
+.pyro_flash--purple {
+  @apply bg-purple-100 text-purple-900 ring-purple-500 fill-purple-900 dark:bg-purple-900 dark:text-purple-100 dark:ring-purple-500 dark:fill-purple-100;
+}
+.pyro_flash--fuchsia {
+  @apply bg-fuchsia-100 text-fuchsia-900 ring-fuchsia-500 fill-fuchsia-900 dark:bg-fuchsia-900 dark:text-fuchsia-100 dark:ring-fuchsia-500 dark:fill-fuchsia-100;
+}
+.pyro_flash--pink {
+  @apply bg-pink-100 text-pink-900 ring-pink-500 fill-pink-900 dark:bg-pink-900 dark:text-pink-100 dark:ring-pink-500 dark:fill-pink-100;
+}
+.pyro_flash--rose {
+  @apply bg-rose-100 text-rose-900 ring-rose-500 fill-rose-900 dark:bg-rose-900 dark:text-rose-100 dark:ring-rose-500 dark:fill-rose-100;
+}
+.pyro_flash__control {
+  @apply grid grid-cols-[1fr,auto] items-center gap-1;
+}
+.pyro_flash__close_icon {
+  @apply h-5 w-5 stroke-current opacity-40 block -mr-2;
+}
+.pyro_flash:hover .pyro_flash__close_icon {
+  @apply opacity-70;
+}
+.pyro_flash__message {
+  @apply text-sm whitespace-pre-wrap;
+}
+.pyro_flash__progress {
+  @apply border border-black/25;
+}
+.pyro_flash__title {
+  @apply flex items-center gap-1.5 text-sm font-semibold leading-6;
+}
+
+/* Core.flash_group */
+.pyro_flash_group {
+  @apply absolute top-2 right-2 grid gap-2;
+}
+
+/* Core.header */
+.pyro_header {
+}
+.pyro_header__actions {
+  @apply flex items-center justify-between gap-6;
+}
+.pyro_header__title {
+  @apply text-lg font-semibold leading-8 text-slate-800 dark:text-slate-50;
+}
+.pyro_header__subtitle {
+  @apply mt-2 text-sm leading-6 text-slate-600 dark:text-slate-200;
+}
+
+/* Core.icon */
+.pyro_icon {
+  @apply h-4 w-4 inline-block align-text-bottom;
+}
+
+/* Core.input */
+.pyro_input {
+  @apply grid gap-1 content-start;
+}
+.pyro_input__input {
+  @apply rounded-lg block w-full border-slate-300 py-[7px] px-[11px] sm:text-sm sm:leading-6 bg-transparent text-slate-900 dark:text-white focus:outline-none focus:ring-4 phx-no-feedback:border-slate-300 phx-no-feedback:focus:border-slate-400 phx-no-feedback:focus:ring-slate-800/5;
+}
+.pyro_input__input[type='checkbox'] {
+  @apply w-auto rounded text-sky-500 dark:text-sky-500;
+}
+.pyro_input__input[type='select'] {
+  @apply py-2 px-3;
+}
+.pyro_input__input.has-errors {
+  @apply border-red-600 focus:border-red-600 focus:ring-red-600/10 dark:border-red-500 dark:focus:border-red-500 dark:focus:ring-red-500/25;
+}
+.pyro_input__input:not(.has-errors) {
+  @apply border-slate-300 dark:border-slate-700 focus:border-slate-500 focus:ring-slate-800/5 dark:focus:border-slate-50 dark:focus:ring-slate-50/25;
+}
+.pyro_input__input_check_label {
+  @apply flex items-center gap-2 text-sm leading-6 text-slate-800 dark:text-slate-100 font-semibold;
+}
+.pyro_input__input_datetime_zoned_wrapper {
+  @apply grid gap-2 text-sm content-center items-center grid-cols-[1fr,auto] justify-start;
+}
+.pyro_input__description {
+  @apply text-xs text-slate-600 dark:text-slate-400;
+}
+textarea.pyro_input__input {
+  @apply min-h-[6rem];
+}
+
+/* Core.label */
+.pyro_label {
+  @apply block text-sm text-left font-semibold leading-6 text-slate-800 dark:text-slate-100;
+}
+
+/* Core.list */
+.pyro_list {
+  @apply grid grid-cols-[auto,1fr] gap-2;
+}
+.pyro_list__dt {
+  @apply font-black leading-6;
+}
+/* .pyro_list__dd { @apply ; } */
+
+/* Core.modal */
+.pyro_modal {
+  @apply relative z-50 hidden;
+}
+
+/* Core.table */
+.pyro_table {
+  @apply w-full;
+}
+.pyro_table__thead {
+  @apply text-left text-[0.8125rem] leading-6;
+}
+.pyro_table__th_label {
+  @apply p-0 pb-4 pr-6 font-normal;
+}
+.pyro_table__th_action {
+  @apply relative p-0 pb-4;
+}
+.pyro_table__tbody {
+  @apply relative divide-y divide-slate-100 border-t border-slate-200 text-sm leading-6;
+}
+.pyro_table__tr {
+  @apply relative hover:bg-slate-50;
+}
+.pyro_table__td {
+  @apply p-0;
+}
+.pyro_table__action {
+  @apply relative ml-4 font-semibold leading-6 hover:text-slate-700;
+}
+.pyro_table__action_wrapper {
+  @apply relative whitespace-nowrap py-4 text-right text-sm font-medium;
+}
+.pyro_table__action_td {
+  @apply p-0 w-14;
+}
+
+/* Core.nav_link */
+.pyro_nav_link {
+  @apply font-black border-b-2 border-dotted text-slate-900 border-slate-900 dark:text-white dark:border-white hover:text-sky-500 hover:border-sky-500 active:text-sky-500 active:border-sky-500 active:border-solid;
+}
+
+.pyro_nav_link--current {
+  @apply border-solid cursor-default text-slate-900 dark:text-white border-slate-900 dark:border-white;
+}
+
+/* Core.progress */
+.pyro_progress {
+  @apply rounded w-full;
+}
+.pyro_progress--xs {
+  @apply h-1;
+}
+.pyro_progress--sm {
+  @apply h-2;
+}
+.pyro_progress--md {
+  @apply h-4;
+}
+.pyro_progress--lg {
+  @apply h-6;
+}
+.pyro_progress--xl {
+  @apply h-8;
+}
+.pyro_progress::-webkit-progress-bar {
+  @apply rounded;
+}
+.pyro_progress::-webkit-progress-value {
+  @apply rounded;
+}
+.pyro_progress::-moz-progress-bar {
+  @apply rounded;
+}
+.pyro_progress--slate,
+.pyro_progress--slate::-webkit-progress-bar {
+  @apply bg-slate-100 dark:bg-slate-900;
+}
+.pyro_progress--slate::-webkit-progress-value {
+  @apply bg-slate-500;
+}
+.pyro_progress--slate::-moz-progress-bar {
+  @apply bg-slate-500;
+}
+.pyro_progress--gray,
+.pyro_progress--gray::-webkit-progress-bar {
+  @apply bg-gray-100 dark:bg-gray-900;
+}
+.pyro_progress--gray::-webkit-progress-value {
+  @apply bg-gray-500;
+}
+.pyro_progress--gray::-moz-progress-bar {
+  @apply bg-gray-500;
+}
+.pyro_progress--zinc,
+.pyro_progress--zinc::-webkit-progress-bar {
+  @apply bg-zinc-100 dark:bg-zinc-900;
+}
+.pyro_progress--zinc::-webkit-progress-value {
+  @apply bg-zinc-500;
+}
+.pyro_progress--zinc::-moz-progress-bar {
+  @apply bg-zinc-500;
+}
+.pyro_progress--neutral,
+.pyro_progress--neutral::-webkit-progress-bar {
+  @apply bg-neutral-100 dark:bg-neutral-900;
+}
+.pyro_progress--neutral::-webkit-progress-value {
+  @apply bg-neutral-500;
+}
+.pyro_progress--neutral::-moz-progress-bar {
+  @apply bg-neutral-500;
+}
+.pyro_progress--stone,
+.pyro_progress--stone::-webkit-progress-bar {
+  @apply bg-stone-100 dark:bg-stone-900;
+}
+.pyro_progress--stone::-webkit-progress-value {
+  @apply bg-stone-500;
+}
+.pyro_progress--stone::-moz-progress-bar {
+  @apply bg-stone-500;
+}
+.pyro_progress--red,
+.pyro_progress--red::-webkit-progress-bar {
+  @apply bg-red-100 dark:bg-red-900;
+}
+.pyro_progress--red::-webkit-progress-value {
+  @apply bg-red-500;
+}
+.pyro_progress--red::-moz-progress-bar {
+  @apply bg-red-500;
+}
+.pyro_progress--orange,
+.pyro_progress--orange::-webkit-progress-bar {
+  @apply bg-orange-100 dark:bg-orange-900;
+}
+.pyro_progress--orange::-webkit-progress-value {
+  @apply bg-orange-500;
+}
+.pyro_progress--orange::-moz-progress-bar {
+  @apply bg-orange-500;
+}
+.pyro_progress--amber,
+.pyro_progress--amber::-webkit-progress-bar {
+  @apply bg-amber-100 dark:bg-amber-900;
+}
+.pyro_progress--amber::-webkit-progress-value {
+  @apply bg-amber-500;
+}
+.pyro_progress--amber::-moz-progress-bar {
+  @apply bg-amber-500;
+}
+.pyro_progress--yellow,
+.pyro_progress--yellow::-webkit-progress-bar {
+  @apply bg-yellow-100 dark:bg-yellow-900;
+}
+.pyro_progress--yellow::-webkit-progress-value {
+  @apply bg-yellow-500;
+}
+.pyro_progress--yellow::-moz-progress-bar {
+  @apply bg-yellow-500;
+}
+.pyro_progress--lime,
+.pyro_progress--lime::-webkit-progress-bar {
+  @apply bg-lime-100 dark:bg-lime-900;
+}
+.pyro_progress--lime::-webkit-progress-value {
+  @apply bg-lime-500;
+}
+.pyro_progress--lime::-moz-progress-bar {
+  @apply bg-lime-500;
+}
+.pyro_progress--green,
+.pyro_progress--green::-webkit-progress-bar {
+  @apply bg-green-100 dark:bg-green-900;
+}
+.pyro_progress--green::-webkit-progress-value {
+  @apply bg-green-500;
+}
+.pyro_progress--green::-moz-progress-bar {
+  @apply bg-green-500;
+}
+.pyro_progress--emerald,
+.pyro_progress--emerald::-webkit-progress-bar {
+  @apply bg-emerald-100 dark:bg-emerald-900;
+}
+.pyro_progress--emerald::-webkit-progress-value {
+  @apply bg-emerald-500;
+}
+.pyro_progress--emerald::-moz-progress-bar {
+  @apply bg-emerald-500;
+}
+.pyro_progress--teal,
+.pyro_progress--teal::-webkit-progress-bar {
+  @apply bg-teal-100 dark:bg-teal-900;
+}
+.pyro_progress--teal::-webkit-progress-value {
+  @apply bg-teal-500;
+}
+.pyro_progress--teal::-moz-progress-bar {
+  @apply bg-teal-500;
+}
+.pyro_progress--cyan,
+.pyro_progress--cyan::-webkit-progress-bar {
+  @apply bg-cyan-100 dark:bg-cyan-900;
+}
+.pyro_progress--cyan::-webkit-progress-value {
+  @apply bg-cyan-500;
+}
+.pyro_progress--cyan::-moz-progress-bar {
+  @apply bg-cyan-500;
+}
+.pyro_progress--sky,
+.pyro_progress--sky::-webkit-progress-bar {
+  @apply bg-sky-100 dark:bg-sky-900;
+}
+.pyro_progress--sky::-webkit-progress-value {
+  @apply bg-sky-500;
+}
+.pyro_progress--sky::-moz-progress-bar {
+  @apply bg-sky-500;
+}
+.pyro_progress--blue,
+.pyro_progress--blue::-webkit-progress-bar {
+  @apply bg-blue-100 dark:bg-blue-900;
+}
+.pyro_progress--blue::-webkit-progress-value {
+  @apply bg-blue-500;
+}
+.pyro_progress--blue::-moz-progress-bar {
+  @apply bg-blue-500;
+}
+.pyro_progress--indigo,
+.pyro_progress--indigo::-webkit-progress-bar {
+  @apply bg-indigo-100 dark:bg-indigo-900;
+}
+.pyro_progress--indigo::-webkit-progress-value {
+  @apply bg-indigo-500;
+}
+.pyro_progress--indigo::-moz-progress-bar {
+  @apply bg-indigo-500;
+}
+.pyro_progress--violet,
+.pyro_progress--violet::-webkit-progress-bar {
+  @apply bg-violet-100 dark:bg-violet-900;
+}
+.pyro_progress--violet::-webkit-progress-value {
+  @apply bg-violet-500;
+}
+.pyro_progress--violet::-moz-progress-bar {
+  @apply bg-violet-500;
+}
+.pyro_progress--purple,
+.pyro_progress--purple::-webkit-progress-bar {
+  @apply bg-purple-100 dark:bg-purple-900;
+}
+.pyro_progress--purple::-webkit-progress-value {
+  @apply bg-purple-500;
+}
+.pyro_progress--purple::-moz-progress-bar {
+  @apply bg-purple-500;
+}
+.pyro_progress--fuchsia,
+.pyro_progress--fuchsia::-webkit-progress-bar {
+  @apply bg-fuchsia-100 dark:bg-fuchsia-900;
+}
+.pyro_progress--fuchsia::-webkit-progress-value {
+  @apply bg-fuchsia-500;
+}
+.pyro_progress--fuchsia::-moz-progress-bar {
+  @apply bg-fuchsia-500;
+}
+.pyro_progress--pink,
+.pyro_progress--pink::-webkit-progress-bar {
+  @apply bg-pink-100 dark:bg-pink-900;
+}
+.pyro_progress--pink::-webkit-progress-value {
+  @apply bg-pink-500;
+}
+.pyro_progress--pink::-moz-progress-bar {
+  @apply bg-pink-500;
+}
+.pyro_progress--rose,
+.pyro_progress--rose::-webkit-progress-bar {
+  @apply bg-rose-100 dark:bg-rose-900;
+}
+.pyro_progress--rose::-webkit-progress-value {
+  @apply bg-rose-500;
+}
+.pyro_progress--rose::-moz-progress-bar {
+  @apply bg-rose-500;
+}
+
+/* Core.simple_form */
+.pyro_simple_form {
+  @apply grid gap-2 bg-white text-slate-900 dark:text-white dark:bg-gradient-to-tr dark:from-slate-900 dark:to-slate-800;
+}
+.pyro_simple_form__actions {
+  @apply mt-2 flex items-center justify-between gap-6;
+}
+
+/* Core.slide_over */
+.pyro_slide_over {
+}
+.pyro_slide_over__overlay {
+  @apply fixed inset-0 z-50 transition-opacity bg-slate-900 dark:bg-slate-900 bg-opacity-30 dark:bg-opacity-70;
+}
+.pyro_slide_over__wrapper {
+}
+.pyro_slide_over__header {
+  @apply px-5 py-3 border-b border-slate-200 dark:border-slate-700;
+}
+.pyro_slide_over__header_inner {
+  @apply flex items-center justify-between;
+}
+.pyro_slide_over__header_title {
+  @apply font-semibold text-slate-900 dark:text-white;
+}
+.pyro_slide_over__header_close_button {
+  @apply text-slate-400 hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400;
+}
+.pyro_slide_over__content {
+  @apply p-5;
+}
+.pyro_slide_over__close_icon {
+  @apply w-6 h-6 fill-current;
+}
+
+/* Core.spinner */
+.pyro_spinner {
+  @apply animate-spin inline-block align-baseline;
+  /* base size */
+  @apply h-3 w-3;
+}
+.pyro_spinner--xs {
+  @apply h-2 w-2;
+}
+.pyro_spinner--sm {
+  @apply h-3 w-3;
+}
+.pyro_spinner--lg {
+  @apply h-3 w-3;
+}
+.pyro_spinner--xl {
+  @apply h-4 w-4;
+}
+.pyro_spinner circle {
+  @apply opacity-25;
+}
+.pyro_spinner path {
+  @apply opacity-75;
+}
+
+/* Core.tooltip */
+.pyro_tooltip {
+  @apply hover:relative inline-block select-none hover:bg-sky-500 rounded cursor-help;
+}
+.pyro_tooltip__tooltip {
+  @apply absolute invisible select-none normal-case block z-10 shadow-md shadow-slate-900/5 dark:shadow-slate-300/5;
+}
+.pyro_tooltip:hover .pyro_tooltip__tooltip {
+  @apply visible;
+}
+.pyro_tooltip__text {
+  @apply bg-sky-500 text-white min-w-[20rem] p-2 rounded text-sm font-normal whitespace-pre;
+}
+
+.pyro_data_table {
+  @apply relative w-full mb-24;
+}
+.pyro_data_table__row {
+  @apply odd:bg-slate-100 odd:dark:bg-slate-950;
+}
+.pyro_data_table__footer {
+  @apply sticky bottom-2 left-2 backdrop-blur flex flex-wrap items-center col-span-full gap-4 rounded-lg border border-slate-50/25 border-solid px-2 py-2 max-w-fit select-none;
+}
+.pyro_data_table__cell {
+  @apply px-1;
+}
+.pyro_data_table__th--sortable {
+  @apply sticky top-0 p-0 z-10 text-sm;
+}
+.pyro_data_table__th--unsortable {
+  @apply sticky top-0 p-0 z-10 text-sm text-center px-2 py-1 font-black border-b-2 border-solid backdrop-blur w-full whitespace-nowrap appearance-none outline-none focus:bg-slate-300/25 focus:dark:bg-slate-50/25 hover:bg-slate-300/25 hover:dark:bg-slate-50/25 border-slate-950/25 dark:border-slate-50/25;
+}
+
+.pyro_data_table__sort_btn--inactive {
+  @apply text-center px-2 py-1 font-black border-b-2 border-solid backdrop-blur w-full block whitespace-nowrap appearance-none outline-none focus:bg-slate-300/25 focus:dark:bg-slate-50/25 hover:bg-slate-300/25 hover:dark:bg-slate-50/25 border-slate-950/25 dark:border-slate-50/25;
+}
+
+.pyro_data_table__sort_btn--active {
+  @apply text-center px-2 py-1 font-black border-b-2 border-solid backdrop-blur w-full block whitespace-nowrap appearance-none outline-none focus:bg-slate-300/25 focus:dark:bg-slate-50/25 hover:bg-slate-300/25 hover:dark:bg-slate-50/25 border-sky-500/75;
+}
+
+.pyro_data_table__sort_icon {
+  @apply align-text-top select-none;
+}
+
+.pyro_data_table__sort_icon_index {
+  @apply bg-blue-500 text-white text-[.65rem] px-[.3rem] py-[.1rem] text-center rounded-full align-text-top select-none;
+}
+
+/* Autocomplete */
+.pyro_autocomplete {
+  @apply grid gap-1 content-start;
+}
+.pyro_autocomplete__listbox {
+  @apply absolute z-10 grid content-start top-0 left-0 sm:text-sm sm:leading-6 bg-white text-slate-900 dark:bg-gradient-to-tr dark:from-slate-900 dark:to-slate-800 dark:text-white border border-slate-300 rounded-lg shadow-lg;
+}
+.pyro_autocomplete__listbox_option {
+  @apply aria-selected:bg-sky-500 aria-selected:text-white py-1 px-2 rounded-lg;
+}
+.pyro_autocomplete__listbox_option:not(.has-results) {
+  @apply cursor-default;
+}
+.pyro_autocomplete__listbox_option.has-results {
+  @apply cursor-pointer hover:bg-slate-300 hover:text-slate-900;
+}

@@ -59,12 +59,6 @@ Utility classes have equal precedence, so overriding the skin ad-hoc can be tric
 - Truncating/removing classes with `Pyro.Component.CSS.classes/1`
 - Auto-merging with [Tails](https://hexdocs.pm/tails/Tails.html)
 
-We did not choose this system for Pyro's default style because:
-
-- Too many `!` hacks or complex merging solutions
-- **Every** variant we design will be included in your CSS, even if unused
-- Way too many classes in elements like `td` add up to heavy HTML pushed to the client
-
 Pros:
 
 - No names or hierarchy
@@ -80,7 +74,7 @@ Cons:
 
 ### BEM + Tailwind
 
-Tailwind can also be used with BEM classes. Pyro provides default styles for this strategy, as well as an overrides file that adds all the needed component classes to implement your own BEM style.
+Tailwind can also be used with BEM classes. Pyro provides default styles for this strategy, as well as an overrides file that adds all the needed component classes.
 
 Details can be found at `PyroComponents.Overrides.BEM`.
 
