@@ -1,11 +1,13 @@
 const path = require('path')
 
 module.exports = {
+  important: '.pyro-storybook-web',
   darkMode: 'class',
   content: [
     './js/**/*.js',
     '../lib/pyro_components_storybook_web.ex',
     '../lib/pyro_components_storybook_web/**/*.*ex',
+    '../storybook/**/*.*exs',
     '../../lib/pyro_components/overrides/bem.ex',
   ],
   plugins: [

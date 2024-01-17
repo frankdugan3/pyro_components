@@ -40,7 +40,7 @@ defmodule PyroComponentsStorybook.MixProject do
     [
       setup: ["deps.get", "assets.setup", "assets.build"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind default", "esbuild default"]
+      "assets.build": ["tailwind storybook", "tailwind default", "esbuild default"]
     ]
   end
 end

@@ -22,7 +22,8 @@ config :pyro_components_storybook, PyroComponentsStorybookWeb.Endpoint,
   secret_key_base: "lFKHsjKHiHfoQo54UezG0q23/zZMlGB9gANXk9tI43rgmLVx/DSROMJCsovQrGkD",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]},
+    tailwind: {Tailwind, :install_and_run, [:storybook, ~w(--watch)]}
   ],
   live_reload: [
     patterns: [
@@ -37,7 +38,7 @@ config :esbuild,
   version: "0.17.11",
   default: [
     args:
-      ~w(js/storybook.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+      ~w(js/app.js js/storybook.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
@@ -49,6 +50,14 @@ config :tailwind,
       --config=tailwind.config.js
       --input=css/app.css
       --output=../priv/static/assets/app.css
+    ),
+    cd: Path.expand("../assets", __DIR__)
+  ],
+  storybook: [
+    args: ~w(
+      --config=storybook.tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/storybook.css
     ),
     cd: Path.expand("../assets", __DIR__)
   ]

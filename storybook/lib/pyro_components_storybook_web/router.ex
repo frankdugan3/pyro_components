@@ -7,6 +7,7 @@ defmodule PyroComponentsStorybookWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
+    plug :put_root_layout, html: {PyroComponentsStorybookWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -17,6 +18,7 @@ defmodule PyroComponentsStorybookWeb.Router do
 
   scope "/" do
     pipe_through(:browser)
+    live "/buttons", PyroComponentsStorybookWeb.ButtonsLive
     live_storybook("/", backend_module: PyroComponentsStorybookWeb.Storybook)
   end
 end
