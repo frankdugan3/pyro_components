@@ -3,7 +3,7 @@ defmodule PyroComponents.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/frankdugan3/pyro_components"
-  @version "0.2.0"
+  @version "0.0.0"
   @description """
   Ready-made Phoenix components, built with Pyro.
   """
@@ -115,15 +115,13 @@ defmodule PyroComponents.MixProject do
       {:mix_audit, ">= 0.0.0", only: :dev, runtime: false},
       {:styler, "~> 0.11", only: [:dev, :test], runtime: false},
       # Build tooling
-      {:ecto, "~> 3.11"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:git_ops, "~> 2.6", only: :dev},
       # Core dependencies
-      # {:pyro, "~> 0.2"},
-      {:pyro, github: "frankdugan3/pyro", branch: "main"},
+      {:ecto, "~> 3.11"},
+      {:pyro, "~> 0.3"},
       {:jason, "~> 1.4"},
       # These dependencies add optional features if installed
-      {:gettext, "~> 0.24", optional: true},
       {:makeup, "~> 1.1", optional: true},
       {:tzdata, "~> 1.1.0", optional: true},
       {:tz_extra, "~> 0.26", optional: true}
@@ -136,6 +134,13 @@ defmodule PyroComponents.MixProject do
         "deps.get",
         "compile",
         "docs"
+      ],
+      # until we hit 1.0, we will ensure no major release!
+      release: [
+        "git_ops.release --no-major"
+      ],
+      publish: [
+        "hex.publish"
       ]
     ]
   end
