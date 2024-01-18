@@ -2,7 +2,7 @@ defmodule Storybook.Components.DataTable do
   @moduledoc false
   use PhoenixStorybook.Story, :component
 
-  def function, do: &PyroComponents.DataTable.data_table/1
+  def function, do: &PyroComponents.Components.DataTable.data_table/1
 
   @characters [
     %{name: "Luke Skywalker", homeworld: "Tatooine", weapon: "Lightsaber"},

@@ -1,4 +1,4 @@
-defmodule PyroComponents.Core do
+defmodule PyroComponents.Components.Core do
   @moduledoc """
   A core set of functional `.heex` components for building web apps. It is similar to (and often API-compatible with) Phoenix's generated `core_components.ex`.
 

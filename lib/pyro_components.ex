@@ -27,10 +27,10 @@ defmodule PyroComponents do
 
   defmacro __using__(_) do
     quote do
-      import PyroComponents.Core
-      import PyroComponents.DataTable
+      import PyroComponents.Components.Core
+      import PyroComponents.Components.DataTable
 
-      alias PyroComponents.Autocomplete
+      alias PyroComponents.Components.Autocomplete
     end
   end
 end

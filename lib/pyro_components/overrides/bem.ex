@@ -91,14 +91,14 @@ defmodule PyroComponents.Overrides.BEM do
   ####    C O R E    C O M P O N E N T S
   ##############################################################################
 
-  override PyroComponents.Core, :a do
+  override PyroComponents.Components.Core, :a do
     set :class, @prefix <> "a"
     set :replace, false
   end
 
   @prefixed_button @prefix <> "button"
   @button_icon_class @prefixed_button <> "__icon"
-  override PyroComponents.Core, :button do
+  override PyroComponents.Components.Core, :button do
     set :class, &__MODULE__.button_class/1
     set :ping_class, @prefixed_button <> "__ping"
     set :ping_animation_class, @prefixed_button <> "__ping_animation"
@@ -127,14 +127,14 @@ defmodule PyroComponents.Overrides.BEM do
   end
 
   @prefixed_code @prefix <> "code"
-  override PyroComponents.Core, :code do
+  override PyroComponents.Components.Core, :code do
     set :class, @prefixed_code <> " makeup"
     set :copy_class, @prefixed_code <> "__copy"
     set :copy, true
     set :copy_label, "Copy"
   end
 
-  override PyroComponents.Core, :color_scheme_switcher do
+  override PyroComponents.Components.Core, :color_scheme_switcher do
     set :class, @prefix <> "color_scheme_switcher"
     set :scheme, &__MODULE__.color_scheme_switcher_scheme/1
     set :label_system, "System"
@@ -149,7 +149,7 @@ defmodule PyroComponents.Overrides.BEM do
     passed_assigns[:scheme] || :system
   end
 
-  override PyroComponents.Core, :copy_to_clipboard do
+  override PyroComponents.Components.Core, :copy_to_clipboard do
     set :class, &__MODULE__.button_class/1
     set :icon_class, @button_icon_class
     set :colors, @color_variants
@@ -163,14 +163,14 @@ defmodule PyroComponents.Overrides.BEM do
   end
 
   @prefixed_error @prefix <> "error"
-  override PyroComponents.Core, :error do
+  override PyroComponents.Components.Core, :error do
     set :class, @prefixed_error
     set :icon_class, @prefixed_error <> "__icon"
     set :icon_name, "hero-exclamation-circle-mini"
   end
 
   @prefixed_flash @prefix <> "flash"
-  override PyroComponents.Core, :flash do
+  override PyroComponents.Components.Core, :flash do
     set :class, @prefixed_flash
     set :control_class, @prefixed_flash <> "__control"
     set :close_button_class, @prefixed_flash <> "__close_button"
@@ -219,25 +219,25 @@ defmodule PyroComponents.Overrides.BEM do
     JS.hide(js, to: selector)
   end
 
-  override PyroComponents.Core, :flash_group do
+  override PyroComponents.Components.Core, :flash_group do
     set :class, @prefix <> "flash_group"
     set :include_kinds, @flash_variants
   end
 
   @prefixed_header @prefix <> "header"
-  override PyroComponents.Core, :header do
+  override PyroComponents.Components.Core, :header do
     set :class, @prefixed_header
     set :title_class, @prefixed_header <> "__title"
     set :subtitle_class, @prefixed_header <> "__subtitle"
     set :actions_class, @prefixed_header <> "__actions"
   end
 
-  override PyroComponents.Core, :icon do
+  override PyroComponents.Components.Core, :icon do
     set :class, @prefix <> "icon"
   end
 
   @prefixed_input @prefix <> "input"
-  override PyroComponents.Core, :input do
+  override PyroComponents.Components.Core, :input do
     set :class, @prefixed_input
     set :input_class, &__MODULE__.input_class/1
     set :input_check_label_class, @prefixed_input <> "__input_check_label"
@@ -251,18 +251,18 @@ defmodule PyroComponents.Overrides.BEM do
     [@prefixed_input <> "__input", "has-errors": passed_assigns[:errors] != []]
   end
 
-  override PyroComponents.Core, :label do
+  override PyroComponents.Components.Core, :label do
     set :class, @prefix <> "label"
   end
 
   @prefixed_list @prefix <> "list"
-  override PyroComponents.Core, :list do
+  override PyroComponents.Components.Core, :list do
     set :class, @prefixed_list
     set :dt_class, @prefixed_list <> "__dt"
     set :dd_class, @prefixed_list <> "__dd"
   end
 
-  override PyroComponents.Core, :modal do
+  override PyroComponents.Components.Core, :modal do
     set :class, @prefix <> "modal"
     set :show_js, &__MODULE__.modal_show_js/2
     set :hide_js, &__MODULE__.modal_hide_js/2
@@ -285,7 +285,7 @@ defmodule PyroComponents.Overrides.BEM do
   end
 
   @prefixed_nav_link @prefix <> "nav_link"
-  override PyroComponents.Core, :nav_link do
+  override PyroComponents.Components.Core, :nav_link do
     set :class, &__MODULE__.nav_link_class/1
   end
 
@@ -294,7 +294,7 @@ defmodule PyroComponents.Overrides.BEM do
   end
 
   @prefixed_progress @prefix <> "progress"
-  override PyroComponents.Core, :progress do
+  override PyroComponents.Components.Core, :progress do
     set :class, &__MODULE__.progress_class/1
     set :size, "base"
     set :sizes, @size_variants
@@ -325,13 +325,13 @@ defmodule PyroComponents.Overrides.BEM do
   end
 
   @prefixed_simple_form @prefix <> "simple_form"
-  override PyroComponents.Core, :simple_form do
+  override PyroComponents.Components.Core, :simple_form do
     set :class, @prefixed_simple_form
     set :actions_class, @prefixed_simple_form <> "__actions"
   end
 
   @prefixed_slide_over @prefix <> "slide_over"
-  override PyroComponents.Core, :slide_over do
+  override PyroComponents.Components.Core, :slide_over do
     set :class, &__MODULE__.slide_over_class/1
     set :overlay_class, @prefixed_slide_over <> "__overlay"
     set :wrapper_class, &__MODULE__.slide_over_wrapper_class/1
@@ -434,7 +434,7 @@ defmodule PyroComponents.Overrides.BEM do
   end
 
   @prefixed_spinner @prefix <> "spinner"
-  override PyroComponents.Core, :spinner do
+  override PyroComponents.Components.Core, :spinner do
     set :class, &__MODULE__.spinner_class/1
     set :size, "base"
     set :sizes, @size_variants
@@ -455,7 +455,7 @@ defmodule PyroComponents.Overrides.BEM do
   end
 
   @prefixed_table @prefix <> "table"
-  override PyroComponents.Core, :table do
+  override PyroComponents.Components.Core, :table do
     set :class, @prefixed_table
     set :thead_class, @prefixed_table <> "__thead"
     set :th_label_class, @prefixed_table <> "__th_label"
@@ -469,7 +469,7 @@ defmodule PyroComponents.Overrides.BEM do
   end
 
   @prefixed_tooltip @prefix <> "tooltip"
-  override PyroComponents.Core, :tooltip do
+  override PyroComponents.Components.Core, :tooltip do
     set :class, @prefixed_tooltip
     set :tooltip_class, @prefixed_tooltip <> "__tooltip"
     set :tooltip_text_class, @prefixed_tooltip <> "__text"
@@ -483,7 +483,7 @@ defmodule PyroComponents.Overrides.BEM do
   ##############################################################################
 
   @prefixed_data_table @prefix <> "data_table"
-  override PyroComponents.DataTable, :data_table do
+  override PyroComponents.Components.DataTable, :data_table do
     set :class, @prefixed_data_table
     set :header_class, @prefixed_data_table <> "__header"
     set :body_class, @prefixed_data_table <> "__body"
@@ -491,7 +491,7 @@ defmodule PyroComponents.Overrides.BEM do
     set :footer_class, @prefixed_data_table <> "__footer"
   end
 
-  override PyroComponents.DataTable, :th do
+  override PyroComponents.Components.DataTable, :th do
     set :class, &__MODULE__.data_table_th_class/1
     set :btn_class, &__MODULE__.data_table_sort_btn_class/1
   end
@@ -512,11 +512,11 @@ defmodule PyroComponents.Overrides.BEM do
     end
   end
 
-  override PyroComponents.DataTable, :cell do
+  override PyroComponents.Components.DataTable, :cell do
     set :class, @prefixed_data_table <> "__cell"
   end
 
-  override PyroComponents.DataTable, :sort_icon do
+  override PyroComponents.Components.DataTable, :sort_icon do
     set :class, @prefixed_data_table <> "__sort_icon"
     set :index_class, @prefixed_data_table <> "__sort_icon_index"
     set :sort_icon_name, &__MODULE__.data_table_sort_icon_name/1
@@ -539,7 +539,7 @@ defmodule PyroComponents.Overrides.BEM do
   ##############################################################################
 
   @prefixed_autocomplete @prefix <> "autocomplete"
-  override PyroComponents.Autocomplete, :render do
+  override PyroComponents.Components.Autocomplete, :render do
     set :class, @prefixed_autocomplete
     set :input_class, &__MODULE__.input_class/1
     set :description_class, @prefixed_input <> "__description"

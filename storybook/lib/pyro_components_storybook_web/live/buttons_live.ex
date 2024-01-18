@@ -6,7 +6,7 @@ defmodule PyroComponentsStorybookWeb.ButtonsLive do
   def render(assigns) do
     ~H"""
     <article class="grid gap-4 p-4">
-      <%= for color <- Pyro.Overrides.override_for(PyroComponents.Core, :button, :colors) do %>
+      <%= for color <- Pyro.Overrides.override_for(PyroComponents.Components.Core, :button, :colors) do %>
         <.button_color_examples color={color} />
       <% end %>
     </article>
@@ -18,7 +18,7 @@ defmodule PyroComponentsStorybookWeb.ButtonsLive do
   def button_color_examples(assigns) do
     ~H"""
     <section class="grid gap-4">
-      <%= for variant <- Pyro.Overrides.override_for(PyroComponents.Core, :button, :variants) do %>
+      <%= for variant <- Pyro.Overrides.override_for(PyroComponents.Components.Core, :button, :variants) do %>
         <.button_size_examples color={@color} variant={variant} />
         <.button_size_examples color={@color} variant={variant} opts={[loading: true]} />
         <.button_size_examples color={@color} variant={variant} opts={[ping: true]} />
@@ -37,7 +37,7 @@ defmodule PyroComponentsStorybookWeb.ButtonsLive do
   def button_size_examples(assigns) do
     ~H"""
     <section class="flex flex-wrap gap-4 justify-start items-end">
-      <%= for size <- Pyro.Overrides.override_for(PyroComponents.Core, :button, :sizes) do %>
+      <%= for size <- Pyro.Overrides.override_for(PyroComponents.Components.Core, :button, :sizes) do %>
         <.button color={@color} size={size} icon_name={@icon_name} variant={@variant} {@opts}>
           <%= [size | [@variant | Keyword.keys(@opts)]] |> Enum.join(" · ") %>
         </.button>

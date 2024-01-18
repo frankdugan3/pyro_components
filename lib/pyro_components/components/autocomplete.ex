@@ -1,10 +1,10 @@
-defmodule PyroComponents.Autocomplete do
+defmodule PyroComponents.Components.Autocomplete do
   @moduledoc """
   A flexible autocomplete component for Phoenix forms.
   """
   use Pyro.LiveComponent
 
-  import PyroComponents.Core, only: [error: 1, label: 1]
+  import PyroComponents.Components.Core, only: [error: 1, label: 1]
   # import Pyro.Gettext
 
   @doc """
@@ -14,7 +14,7 @@ defmodule PyroComponents.Autocomplete do
 
       <.simple_form for={@form} phx-change="validate" phx-submit="save">
         <.live_component
-          module={PyroComponents.Autocomplete}
+          module={PyroComponents.Components.Autocomplete}
           id="fiend_id_autocomplete"
           field={@form[:friend_id]}
           label="Friend"

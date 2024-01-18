@@ -2,7 +2,7 @@ defmodule Storybook.Components.Button do
   @moduledoc false
   use PhoenixStorybook.Story, :component
 
-  def function, do: &PyroComponents.Core.button/1
+  def function, do: &PyroComponents.Components.Core.button/1
 
   def variations do
     [

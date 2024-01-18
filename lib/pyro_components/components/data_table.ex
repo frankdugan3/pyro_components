@@ -1,10 +1,10 @@
-defmodule PyroComponents.DataTable do
+defmodule PyroComponents.Components.DataTable do
   @moduledoc """
   Tooling and components for rendering data tables.
   """
   use Pyro.Component
 
-  import PyroComponents.Core
+  import PyroComponents.Components.Core
 
   @doc """
   A complex data table component, featuring streams, multi-column sorting and pagination.
