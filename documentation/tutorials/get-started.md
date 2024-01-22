@@ -16,7 +16,7 @@ These steps assume you are adding PyroComponents to an existing Phoenix LiveView
    def deps do
      [
     {:pyro, "~> 0.2.0"},
-    {:pyro_components, "~> 0.0.0"},
+    {:pyro_components, "~> 0.1.0"},
 
     # Heroicon support in components
     {:heroicons,
