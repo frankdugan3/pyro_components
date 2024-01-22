@@ -57,6 +57,7 @@ module.exports = plugin.withOptions(function (options = {}) {
       '.phx-change-loading &',
     ])
     addVariant('has-errors', '&.has-errors')
+    addVariant('selected', '&[selected]')
     addVariant('aria-selected', '&[aria-selected]')
     addVariant('aria-checked', '&[aria-checked]')
 

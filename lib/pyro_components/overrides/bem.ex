@@ -489,6 +489,7 @@ defmodule PyroComponents.Overrides.BEM do
     set :body_class, @prefixed_data_table <> "__body"
     set :row_class, @prefixed_data_table <> "__row"
     set :footer_class, @prefixed_data_table <> "__footer"
+    set :footer_wrapper_class, @prefixed_data_table <> "__footer_wrapper"
   end
 
   override PyroComponents.Components.DataTable, :th do
@@ -532,6 +533,35 @@ defmodule PyroComponents.Overrides.BEM do
       :desc_nils_last -> "hero-chevron-double-down-solid"
       _ -> nil
     end
+  end
+
+  ##############################################################################
+  ####    P A G I N A T I O N    C O M P O N E N T
+  ##############################################################################
+
+  @prefixed_pagination @prefix <> "pagination"
+  override PyroComponents.Components.Pagination, :pagination do
+    set :class, @prefixed_pagination
+    set :first_class, @prefixed_pagination <> "__first"
+    set :first_icon, "hero-chevron-double-left-solid"
+    set :first_icon_class, @prefixed_pagination <> "__first_icon"
+    set :previous_class, @prefixed_pagination <> "__previous"
+    set :previous_icon, "hero-chevron-left-solid"
+    set :previous_icon_class, @prefixed_pagination <> "__previous_icon"
+    set :next_class, @prefixed_pagination <> "__next"
+    set :next_icon, "hero-chevron-right-solid"
+    set :next_icon_class, @prefixed_pagination <> "__next_icon"
+    set :last_class, @prefixed_pagination <> "__last"
+    set :last_icon, "hero-chevron-double-right-solid"
+    set :last_icon_class, @prefixed_pagination <> "__last_icon"
+    set :reset_class, @prefixed_pagination <> "__reset"
+    set :top_class, @prefixed_pagination <> "__top"
+    set :top_icon, "hero-chevron-double-up-solid"
+    set :top_icon_class, @prefixed_pagination <> "__top_icon"
+    set :limit_form_class, @prefixed_pagination <> "__limit_form"
+    set :limit_form_label_class, @prefixed_pagination <> "__limit_form_label"
+    set :limit_form_input_class, @prefixed_pagination <> "__limit_form_input"
+    set :limit_form_input_option_class, @prefixed_pagination <> "__limit_form_input_option"
   end
 
   ##############################################################################

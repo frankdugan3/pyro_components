@@ -29,6 +29,7 @@ defmodule PyroComponents do
     quote do
       import PyroComponents.Components.Core
       import PyroComponents.Components.DataTable
+      import PyroComponents.Components.Pagination, only: [pagination: 1]
 
       alias PyroComponents.Components.Autocomplete
     end

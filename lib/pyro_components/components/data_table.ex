@@ -5,6 +5,7 @@ defmodule PyroComponents.Components.DataTable do
   use Pyro.Component
 
   import PyroComponents.Components.Core
+  import PyroComponents.Components.Pagination
 
   @doc """
   A complex data table component, featuring streams, multi-column sorting and pagination.
@@ -23,7 +24,6 @@ defmodule PyroComponents.Components.DataTable do
     doc: "the function for mapping each row before calling the :col and :action slots"
 
   attr :rows, :list, required: true
-  attr :page_info_label, :string, default: "records"
   attr :page_limit_options, :list, default: [10, 25, 50, 100, 250, 500, 1_000]
   attr :page, :map, default: nil
   attr :sort, :list, required: true
@@ -32,6 +32,7 @@ defmodule PyroComponents.Components.DataTable do
   attr :body_class, :css_classes, overridable: true
   attr :row_class, :css_classes, overridable: true
   attr :footer_class, :css_classes, overridable: true
+  attr :footer_wrapper_class, :css_classes, overridable: true
 
   slot :col, required: true do
     attr :label, :string
@@ -74,104 +75,12 @@ defmodule PyroComponents.Components.DataTable do
       <tfoot>
         <tr>
           <td class={@footer_class} colspan={length(@col) + if @action != [], do: 1, else: 0}>
-            <div :if={@page} class="grid grid-flow-col justify-center items-center gap-1">
-              <.button
-                class="p-0 grid justify-center items-center"
-                disabled={!prev_page?(@page)}
-                color="sky"
-                title="First Page"
-                phx-click={
-                  JS.dispatch("pyro:scroll-top", detail: %{id: @id})
-                  |> JS.push("change-page-number")
-                }
-                phx-value-component-id={@id}
-                phx-value-page-number={0}
-              >
-                <.icon name="hero-chevron-double-left-solid" class="h-6 w-6" />
-              </.button>
-              <.button
-                class="p-0 grid justify-center items-center"
-                disabled={!prev_page?(@page)}
-                color="sky"
-                title="Previous Page"
-                phx-click={
-                  JS.dispatch("pyro:scroll-top", detail: %{id: @id})
-                  |> JS.push("change-page-number")
-                }
-                phx-value-component-id={@id}
-                phx-value-page-number={prev_page(@page)}
-              >
-                <.icon name="hero-chevron-left-solid" class="h-6 w-6" />
-              </.button>
-              <.button
-                class="p-0 grid justify-center items-center"
-                disabled={!next_page?(@page)}
-                color="sky"
-                title="Next Page"
-                phx-click={
-                  JS.dispatch("pyro:scroll-top", detail: %{id: @id})
-                  |> JS.push("change-page-number")
-                }
-                phx-value-component-id={@id}
-                phx-value-page-number={next_page(@page)}
-              >
-                <.icon name="hero-chevron-right-solid" class="h-6 w-6" />
-              </.button>
-              <.button
-                class="p-0 grid justify-center items-center"
-                disabled={!next_page?(@page)}
-                color="sky"
-                title="Last Page"
-                phx-click={
-                  JS.dispatch("pyro:scroll-top", detail: %{id: @id})
-                  |> JS.push("change-page-number")
-                }
-                phx-value-component-id={@id}
-                phx-value-page-number={page_count(@page)}
-              >
-                <.icon name="hero-chevron-double-right-solid" class="h-6 w-6" />
-              </.button>
-            </div>
-            <form
-              :if={@page}
-              phx-change="change-page-limit"
-              class="grid grid-flow-col gap-1 items-center"
-            >
-              <input type="hidden" name="data_table_form[table_id]" value={@id} />
-              <label>Limit:</label>
-              <select
-                name="data_table_form[limit]"
-                class="appearance-none bg-sky-500/50 text-black dark:text-white rounded border-none py-0 p-2 pr-8 outline-none focus:outline-none w-22 text-right"
-              >
-                <option selected value={@page.limit}><%= delimit_integer(@page.limit) %></option>
-                <option :for={limit <- @page_limit_options} value={limit}>
-                  <%= delimit_integer(limit) %>
-                </option>
-              </select>
-            </form>
-            <span :if={@page}><%= page_info(@page, @page_info_label) %></span>
-            <div class="grid grid-flow-col justify-center items-center gap-1">
-              <.button
-                color="white"
-                variant="outline"
-                title="Reset Page/Filter/Sort"
-                phx-click={
-                  JS.dispatch("pyro:scroll-top", detail: %{id: @id})
-                  |> JS.push("reset-table")
-                }
-                phx-value-component-id={@id}
-              >
-                Reset Table
-              </.button>
-              <.button
-                color="white"
-                variant="outline"
-                title="Scroll to top of page"
-                phx-click={JS.dispatch("pyro:scroll-top", detail: %{id: @id})}
-                phx-value-component-id={@id}
-              >
-                <.icon name="hero-chevron-double-up-solid" />
-              </.button>
+            <div class={@footer_wrapper_class}>
+              <.pagination
+                page={@page || %{count: length(@rows)}}
+                page_limit_options={@page_limit_options}
+                target_id={@id}
+              />
             </div>
           </td>
         </tr>
@@ -277,85 +186,6 @@ defmodule PyroComponents.Components.DataTable do
     </span>
     """
   end
-
-  defp prev_page?(%{offset: 0}), do: false
-  defp prev_page?(%{offset: offset}) when is_integer(offset), do: true
-
-  defp prev_page?(_), do: raise("Need to implement keyset pagination!")
-
-  defp prev_page(%{offset: _} = page) do
-    page
-    |> page_number()
-    |> Kernel.-(1)
-    |> max(0)
-  end
-
-  defp prev_page(_), do: raise("Need to implement keyset pagination!")
-
-  defp next_page?(%{offset: offset} = page) when is_integer(offset) do
-    if page_number(page) < page_count(page) do
-      true
-    else
-      false
-    end
-  end
-
-  defp next_page?(_), do: raise("Need to implement keyset pagination!")
-
-  defp next_page(%{offset: _} = page) do
-    page
-    |> page_number()
-    |> Kernel.+(1)
-    |> min(page_count(page))
-  end
-
-  defp next_page(_), do: raise("Need to implement keyset pagination!")
-
-  defp page_number(%{offset: 0}), do: 0
-
-  defp page_number(%{offset: offset, limit: limit}) do
-    if rem(offset, limit) == 0 do
-      div(offset, limit)
-    else
-      div(offset, limit) + 1
-    end
-  end
-
-  defp page_number(_), do: raise("Need to implement keyset pagination!")
-
-  defp page_count(%{count: 0}), do: 0
-
-  defp page_count(%{count: count, limit: limit}) do
-    if_result =
-      if rem(count, limit) == 0 do
-        div(count, limit)
-      else
-        div(count, limit) + 1
-      end
-
-    Kernel.-(if_result, 1)
-  end
-
-  defp page_count(_), do: raise("Need to implement keyset pagination!")
-
-  defp page_info(page, label) do
-    n =
-      page
-      |> page_number()
-      |> Kernel.+(1)
-      |> delimit_integer()
-
-    c =
-      page
-      |> page_count()
-      |> Kernel.+(1)
-      |> delimit_integer()
-
-    t = delimit_integer(page.count)
-    "Page #{n} of #{c} (#{t} #{label})"
-  end
-
-  defp delimit_integer(number), do: floor(number)
 
   @doc """
   Stringifies the columns to display for storage in a url param.

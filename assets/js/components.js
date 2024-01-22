@@ -35,7 +35,7 @@ window.addEventListener(`pyro:scroll-top`, (e) => {
 })
 
 // Scroll element or parents if already scrolled
-function maybeScrollParent(el, depth = 0) {
+export function maybeScrollParent(el, depth = 0) {
   if (el.scrollTop == 0 && el.parentElement && el.parentElement.scrollTop > 0) {
     el.parentElement.scrollTop = 0
   } else if (
@@ -91,236 +91,244 @@ export async function sendTimezoneToServer() {
 // ####    H O O K S
 // #############################################################################
 
-export const hooks = {
-  PyroColorSchemeHook: {
-    mounted() {
-      this.init(this.el.getAttribute('data-scheme'))
-    },
-    updated() {
-      this.init()
-    },
-    init(scheme) {
-      initScheme(scheme)
-      this.el.addEventListener('click', window.toggleScheme)
-    },
+export const PyroColorSchemeHook = {
+  mounted() {
+    this.init(this.el.getAttribute('data-scheme'))
   },
-  PyroFlashComponent: {
-    mounted() {
-      this.oldMessageHTML = document.querySelector(
-        `#${this.el.id}-message`,
-      ).innerHTML
-      if (this.el.dataset?.autoshow !== undefined) {
-        window.liveSocket.execJS(
-          this.el,
-          this.el.getAttribute('data-show-exec-js'),
-        )
-      }
-      resetHideTTL(this)
-    },
-    updated() {
-      newMessageHTML = document.querySelector(
-        `#${this.el.id}-message`,
-      ).innerHTML
-      if (newMessageHTML !== this.oldMessageHTML) {
-        this.oldEl = this.el
-        this.oldMessageHTML = newMessageHTML
-        resetHideTTL(this)
-      } else {
-        el.value = this.countdown
-      }
-    },
-    destroyed() {
-      clearInterval(this.ttlInterval)
-    },
+  updated() {
+    this.init()
   },
-  PyroNudgeIntoView: {
-    mounted() {
-      nudge(this.el)
-    },
-    updated() {
-      nudge(this.el)
-    },
-  },
-  PyroAutocompleteComponent: {
-    mounted() {
-      this.lastValueSent = null
-      const expanded = () => {
-        return booleanDataset(this.el.getAttribute('aria-expanded'))
-      }
-
-      const updateSearchThrottled = throttle(() => {
-        if (this.lastValueSent !== this.el.value || !expanded()) {
-          this.lastValueSent = this.el.value
-          this.pushEventTo(this.el.dataset.myself, 'search', this.el.value)
-        }
-      }, this.el.dataset.throttleTime)
-
-      if (this.el.dataset.autofocus) {
-        focusAndSelect(this.el)
-      }
-
-      const selectedIndex = () => {
-        return parseInt(this.el.dataset.selectedIndex)
-      }
-      const options = () => {
-        const listbox = document.getElementById(
-          this.el.getAttribute('aria-controls'),
-        )
-
-        if (listbox?.children) {
-          return Array.from(listbox.children)
-        } else {
-          return []
-        }
-      }
-
-      const setSelectedIndex = (selectedIndex) => {
-        // Loop selectedIndex back to first or last result if out of bounds
-        const rc = parseInt(this.el.dataset.resultsCount)
-        selectedIndex = ((selectedIndex % rc) + rc) % rc
-        this.el.dataset.selectedIndex = selectedIndex
-
-        options().forEach((option, i) => {
-          if (i === selectedIndex) {
-            option.setAttribute('aria-selected', true)
-          } else {
-            option.removeAttribute('aria-selected')
-          }
-        })
-      }
-
-      const pick = (e) => {
-        const i = selectedIndex()
-        const input_el = document.getElementById(this.el.dataset.inputId)
-        let label = ''
-        let value = ''
-
-        if (i > -1) {
-          const option = options()[i]
-          label = option.dataset.label
-          value = option.dataset.value
-        }
-
-        e.preventDefault()
-        e.stopPropagation()
-        this.el.value = label
-        this.el.focus()
-        selectValue(this.el)
-        this.pushEventTo(this.el.dataset.myself, 'pick', {
-          label,
-          value,
-        })
-
-        input_el.value = value
-        input_el.dispatchEvent(new Event('input', { bubbles: true }))
-
-        return false
-      }
-
-      this.el.addEventListener('keydown', (e) => {
-        switch (e.key) {
-          case 'Tab':
-            if (expanded()) {
-              return pick(e)
-            } else {
-              return true
-            }
-          case 'Esc': // IE/Edge
-          case 'Escape':
-            if (this.el.value !== '' || !expanded()) {
-              e.preventDefault()
-              e.stopPropagation()
-              this.el.value = ''
-              this.el.dataset.selectedIndex = -1
-              options().forEach((option, i) => {
-                option.removeAttribute('aria-selected')
-              })
-              updateSearchThrottled()
-              return false
-            } else if (expanded()) {
-              e.preventDefault()
-              e.stopPropagation()
-              this.el.value = this.el.dataset.savedLabel || ''
-              selectValue(this.el)
-              this.pushEventTo(this.el.dataset.myself, 'cancel')
-              this.lastValueSent = null
-              return false
-            } else {
-              return true
-            }
-          case 'Enter':
-            if (expanded()) {
-              return pick(e)
-            } else {
-              this.el.value = ''
-              e.preventDefault()
-              e.stopPropagation()
-              updateSearchThrottled()
-              return false
-            }
-          case 'Up': // IE/Edge
-          case 'Down': // IE/Edge
-          case 'ArrowUp':
-          case 'ArrowDown':
-            if (expanded()) {
-              e.preventDefault()
-              e.stopPropagation()
-
-              let i = selectedIndex()
-              i = e.key === 'ArrowUp' || e.key === 'Up' ? i - 1 : i + 1
-              setSelectedIndex(i)
-
-              return false
-            } else {
-              return true
-            }
-          default:
-            return true
-        }
-      })
-      this.el.addEventListener('focus', (e) => {
-        selectValue(this.el)
-      })
-      this.el.addEventListener('input', (e) => {
-        switch (e.inputType) {
-          case 'insertText':
-          case 'deleteContentBackward':
-          case 'deleteContentForward':
-            updateSearchThrottled()
-            return true
-          default:
-            return false
-        }
-      })
-      this.el.addEventListener('pick', (e) => {
-        setSelectedIndex(e.detail.dispatcher.dataset.index)
-        return pick(e)
-      })
-    },
-  },
-  PyroCopyToClipboard: {
-    mounted() {
-      this.content = this.el.innerHTML
-      let { value, message, ttl } = this.el.dataset
-      this.el.addEventListener('click', (e) => {
-        e.preventDefault()
-        navigator.clipboard.writeText(value)
-        this.el.innerHTML = message || 'Copied to clipboard!'
-        this.timeout = window.setTimeout(() => {
-          this.el.innerHTML = this.content
-        }, ttl)
-      })
-    },
-    updated() {
-      window.clearTimeout(this.timeout)
-    },
-    destroyed() {
-      window.clearTimeout(this.timeout)
-    },
+  init(scheme) {
+    initScheme(scheme)
+    this.el.addEventListener('click', window.toggleScheme)
   },
 }
 
-function nudge(el) {
+export const PyroFlashComponent = {
+  mounted() {
+    this.oldMessageHTML = document.querySelector(
+      `#${this.el.id}-message`,
+    ).innerHTML
+    if (this.el.dataset?.autoshow !== undefined) {
+      window.liveSocket.execJS(
+        this.el,
+        this.el.getAttribute('data-show-exec-js'),
+      )
+    }
+    resetHideTTL(this)
+  },
+  updated() {
+    newMessageHTML = document.querySelector(`#${this.el.id}-message`).innerHTML
+    if (newMessageHTML !== this.oldMessageHTML) {
+      this.oldEl = this.el
+      this.oldMessageHTML = newMessageHTML
+      resetHideTTL(this)
+    } else {
+      el.value = this.countdown
+    }
+  },
+  destroyed() {
+    clearInterval(this.ttlInterval)
+  },
+}
+
+export const PyroNudgeIntoView = {
+  mounted() {
+    nudge(this.el)
+  },
+  updated() {
+    nudge(this.el)
+  },
+}
+
+export const PyroAutocompleteComponent = {
+  mounted() {
+    this.lastValueSent = null
+    const expanded = () => {
+      return booleanDataset(this.el.getAttribute('aria-expanded'))
+    }
+
+    const updateSearchThrottled = throttle(() => {
+      if (this.lastValueSent !== this.el.value || !expanded()) {
+        this.lastValueSent = this.el.value
+        this.pushEventTo(this.el.dataset.myself, 'search', this.el.value)
+      }
+    }, this.el.dataset.throttleTime)
+
+    if (this.el.dataset.autofocus) {
+      focusAndSelect(this.el)
+    }
+
+    const selectedIndex = () => {
+      return parseInt(this.el.dataset.selectedIndex)
+    }
+    const options = () => {
+      const listbox = document.getElementById(
+        this.el.getAttribute('aria-controls'),
+      )
+
+      if (listbox?.children) {
+        return Array.from(listbox.children)
+      } else {
+        return []
+      }
+    }
+
+    const setSelectedIndex = (selectedIndex) => {
+      // Loop selectedIndex back to first or last result if out of bounds
+      const rc = parseInt(this.el.dataset.resultsCount)
+      selectedIndex = ((selectedIndex % rc) + rc) % rc
+      this.el.dataset.selectedIndex = selectedIndex
+
+      options().forEach((option, i) => {
+        if (i === selectedIndex) {
+          option.setAttribute('aria-selected', true)
+        } else {
+          option.removeAttribute('aria-selected')
+        }
+      })
+    }
+
+    const pick = (e) => {
+      const i = selectedIndex()
+      const input_el = document.getElementById(this.el.dataset.inputId)
+      let label = ''
+      let value = ''
+
+      if (i > -1) {
+        const option = options()[i]
+        label = option.dataset.label
+        value = option.dataset.value
+      }
+
+      e.preventDefault()
+      e.stopPropagation()
+      this.el.value = label
+      this.el.focus()
+      selectValue(this.el)
+      this.pushEventTo(this.el.dataset.myself, 'pick', {
+        label,
+        value,
+      })
+
+      input_el.value = value
+      input_el.dispatchEvent(new Event('input', { bubbles: true }))
+
+      return false
+    }
+
+    this.el.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'Tab':
+          if (expanded()) {
+            return pick(e)
+          } else {
+            return true
+          }
+        case 'Esc': // IE/Edge
+        case 'Escape':
+          if (this.el.value !== '' || !expanded()) {
+            e.preventDefault()
+            e.stopPropagation()
+            this.el.value = ''
+            this.el.dataset.selectedIndex = -1
+            options().forEach((option, i) => {
+              option.removeAttribute('aria-selected')
+            })
+            updateSearchThrottled()
+            return false
+          } else if (expanded()) {
+            e.preventDefault()
+            e.stopPropagation()
+            this.el.value = this.el.dataset.savedLabel || ''
+            selectValue(this.el)
+            this.pushEventTo(this.el.dataset.myself, 'cancel')
+            this.lastValueSent = null
+            return false
+          } else {
+            return true
+          }
+        case 'Enter':
+          if (expanded()) {
+            return pick(e)
+          } else {
+            this.el.value = ''
+            e.preventDefault()
+            e.stopPropagation()
+            updateSearchThrottled()
+            return false
+          }
+        case 'Up': // IE/Edge
+        case 'Down': // IE/Edge
+        case 'ArrowUp':
+        case 'ArrowDown':
+          if (expanded()) {
+            e.preventDefault()
+            e.stopPropagation()
+
+            let i = selectedIndex()
+            i = e.key === 'ArrowUp' || e.key === 'Up' ? i - 1 : i + 1
+            setSelectedIndex(i)
+
+            return false
+          } else {
+            return true
+          }
+        default:
+          return true
+      }
+    })
+    this.el.addEventListener('focus', (e) => {
+      selectValue(this.el)
+    })
+    this.el.addEventListener('input', (e) => {
+      switch (e.inputType) {
+        case 'insertText':
+        case 'deleteContentBackward':
+        case 'deleteContentForward':
+          updateSearchThrottled()
+          return true
+        default:
+          return false
+      }
+    })
+    this.el.addEventListener('pick', (e) => {
+      setSelectedIndex(e.detail.dispatcher.dataset.index)
+      return pick(e)
+    })
+  },
+}
+
+export const PyroCopyToClipboard = {
+  mounted() {
+    this.content = this.el.innerHTML
+    let { value, message, ttl } = this.el.dataset
+    this.el.addEventListener('click', (e) => {
+      e.preventDefault()
+      navigator.clipboard.writeText(value)
+      this.el.innerHTML = message || 'Copied to clipboard!'
+      this.timeout = window.setTimeout(() => {
+        this.el.innerHTML = this.content
+      }, ttl)
+    })
+  },
+  updated() {
+    window.clearTimeout(this.timeout)
+  },
+  destroyed() {
+    window.clearTimeout(this.timeout)
+  },
+}
+
+export const hooks = {
+  PyroColorSchemeHook,
+  PyroFlashComponent,
+  PyroNudgeIntoView,
+  PyroAutocompleteComponent,
+  PyroCopyToClipboard,
+}
+
+export function nudge(el) {
   let width = window.innerWidth
   let height = window.innerHeight
   let rect = el.getBoundingClientRect()
@@ -347,7 +355,7 @@ function nudge(el) {
   }
 }
 
-function resetHideTTL(self) {
+export function resetHideTTL(self) {
   clearInterval(self.ttlInterval)
   if (self.el.dataset?.ttl > 0) {
     self.countdown = self.el.dataset?.ttl
