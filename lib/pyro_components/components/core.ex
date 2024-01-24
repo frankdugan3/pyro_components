@@ -931,7 +931,7 @@ defmodule PyroComponents.Components.Core do
 
     ~H"""
     <div phx-feedback-for={@name} class={@class}>
-      <.label for={@id} overrides={@overrides}><%= @label %></.label>
+      <.label :if={@label} for={@id} overrides={@overrides}><%= @label %></.label>
       <div class={@input_datetime_zoned_wrapper_class}>
         <input
           type="datetime-local"
@@ -970,7 +970,7 @@ defmodule PyroComponents.Components.Core do
   defp render_input(%{type: "select"} = assigns) do
     ~H"""
     <div class={@class} phx-feedback-for={@name}>
-      <.label for={@id} overrides={@overrides}><%= @label %></.label>
+      <.label :if={@label} for={@id} overrides={@overrides}><%= @label %></.label>
       <select
         id={@id}
         name={@name}
@@ -994,7 +994,7 @@ defmodule PyroComponents.Components.Core do
   defp render_input(%{type: "textarea"} = assigns) do
     ~H"""
     <div phx-feedback-for={@name} class={@class}>
-      <.label for={@id} overrides={@overrides}><%= @label %></.label>
+      <.label :if={@label} for={@id} overrides={@overrides}><%= @label %></.label>
       <textarea
         id={@id}
         name={@name}
@@ -1015,28 +1015,28 @@ defmodule PyroComponents.Components.Core do
 
   defp render_input(%{type: "hidden"} = assigns) do
     ~H"""
-    <div phx-feedback-for={@name} class={@class}>
-      <.label for={@id} overrides={@overrides}><%= @label %></.label>
-      <input
-        type="hidden"
-        name={@name}
-        id={@id}
-        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-        {@rest}
-      />
-      <%= render_slot(@inner_block) %>
+    <%!-- <div phx-feedback-for={@name} class={@class}>
+      <.label :if={@label} for={@id} overrides={@overrides}><%= @label %></.label> --%>
+    <input
+      type="hidden"
+      name={@name}
+      id={@id}
+      value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+      {@rest}
+    />
+    <%!-- <%= render_slot(@inner_block) %>
       <p :if={@description} class={@description_class}>
         <%= @description %>
       </p>
       <.error :for={msg <- @errors} overrides={@overrides}><%= msg %></.error>
-    </div>
+    </div> --%>
     """
   end
 
   defp render_input(assigns) do
     ~H"""
     <div phx-feedback-for={@name} class={@class}>
-      <.label for={@id} overrides={@overrides}><%= @label %></.label>
+      <.label :if={@label} for={@id} overrides={@overrides}><%= @label %></.label>
       <input
         type={@type}
         name={@name}

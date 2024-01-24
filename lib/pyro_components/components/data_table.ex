@@ -31,6 +31,7 @@ defmodule PyroComponents.Components.DataTable do
   attr :header_class, :css_classes, overridable: true
   attr :body_class, :css_classes, overridable: true
   attr :row_class, :css_classes, overridable: true
+  attr :row_actions_class, :css_classes, overridable: true
   attr :footer_class, :css_classes, overridable: true
   attr :footer_wrapper_class, :css_classes, overridable: true
 
@@ -64,10 +65,7 @@ defmodule PyroComponents.Components.DataTable do
           <.cell :for={col <- @col} class={col[:cell_class]}>
             <%= render_slot(col, @row_item.(row)) %>
           </.cell>
-          <.cell
-            :if={@action != []}
-            class="grid grid-flow-col items-center justify-center px-1 gap-1 select-none"
-          >
+          <.cell :if={@action != []} class={@row_actions_class}>
             <%= render_slot(@action, @row_item.(row)) %>
           </.cell>
         </tr>

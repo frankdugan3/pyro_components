@@ -488,6 +488,7 @@ defmodule PyroComponents.Overrides.BEM do
     set :header_class, @prefixed_data_table <> "__header"
     set :body_class, @prefixed_data_table <> "__body"
     set :row_class, @prefixed_data_table <> "__row"
+    set :row_actions_class, @prefixed_data_table <> "__row_actions"
     set :footer_class, @prefixed_data_table <> "__footer"
     set :footer_wrapper_class, @prefixed_data_table <> "__footer_wrapper"
   end

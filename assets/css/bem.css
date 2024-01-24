@@ -305,8 +305,8 @@
   @apply w-auto rounded text-sky-500 dark:text-sky-500;
 }
 
-.pyro_input__input[type='select'] {
-  @apply py-2 px-3;
+select.pyro_input__input {
+  @apply py-2 px-3 pr-8;
 }
 
 .pyro_input__input.has-errors {
@@ -330,6 +330,10 @@
 }
 textarea.pyro_input__input {
   @apply min-h-[6rem];
+}
+
+.pyro_input__input option {
+  @apply appearance-none bg-white text-black dark:bg-slate-900 dark:text-white selected:bg-slate-500 selected:text-white dark:selected:bg-slate-500 dark:selected:text-white;
 }
 
 /* Core.label */
@@ -830,11 +834,15 @@ textarea.pyro_input__input {
 }
 
 .pyro_data_table__footer_wrapper {
-  @apply flex flex-wrap gap-2 items-center rounded backdrop-blur border border-slate-50/25 border-solid p-2 max-w-fit;
+  @apply flex flex-wrap gap-2 items-center rounded backdrop-blur border border-slate-950/25 dark:border-slate-50/25 border-solid p-2 max-w-fit;
 }
 
 .pyro_data_table__cell {
   @apply px-1;
+}
+
+.pyro_data_table__row_actions {
+  @apply grid grid-flow-col items-center justify-center px-1 gap-1 select-none;
 }
 
 .pyro_data_table__th--sortable {
