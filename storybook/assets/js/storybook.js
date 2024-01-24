@@ -1,11 +1,11 @@
-import { hooks, getTimezone } from 'pyro_components'
+import { hooks, getTimezone } from 'pyro_components';
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
-  .getAttribute('content')
+  .getAttribute('content');
 
-;(function () {
+(function () {
   window.storybook = {
     Hooks: hooks,
     Params: { _csrf_token: csrfToken, timezone: getTimezone() },
-  }
-})()
+  };
+})();

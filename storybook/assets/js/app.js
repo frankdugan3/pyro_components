@@ -1,13 +1,13 @@
-import 'phoenix_html'
-import { Socket } from 'phoenix'
-import { LiveSocket } from 'phoenix_live_view'
-import { hooks, getTimezone, sendTimezoneToServer } from 'pyro_components'
+import 'phoenix_html';
+import { Socket } from 'phoenix';
+import { LiveSocket } from 'phoenix_live_view';
+import { hooks, getTimezone, sendTimezoneToServer } from 'pyro_components';
 
-sendTimezoneToServer()
+sendTimezoneToServer();
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
-  .getAttribute('content')
+  .getAttribute('content');
 let liveSocket = new LiveSocket('/live', Socket, {
   params: { _csrf_token: csrfToken, timezone: getTimezone() },
   hooks: { ...hooks },
@@ -17,7 +17,7 @@ let liveSocket = new LiveSocket('/live', Socket, {
         shiftKey: e.shiftKey,
         ctrlKey: e.ctrlKey,
         // detail: e.detail || 1,
-      }
+      };
     },
     // keydown: (e, el) => {
     //   return {
@@ -38,6 +38,6 @@ let liveSocket = new LiveSocket('/live', Socket, {
     //   }
     // },
   },
-})
+});
 
-liveSocket.connect()
+liveSocket.connect();

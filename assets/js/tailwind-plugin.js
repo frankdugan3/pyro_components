@@ -1,31 +1,31 @@
-const plugin = require('tailwindcss/plugin')
-const fs = require('fs')
-const path = require('path')
+const plugin = require('tailwindcss/plugin');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = plugin.withOptions(function (options = {}) {
   return function ({ addVariant, addBase, theme, matchComponents }) {
     if (options.heroIconsPath) {
-      let iconsDir = options.heroIconsPath
-      let values = {}
+      let iconsDir = options.heroIconsPath;
+      let values = {};
       let icons = [
         ['', '/24/outline'],
         ['-solid', '/24/solid'],
         ['-mini', '/20/solid'],
         ['-micro', '/20/solid'],
-      ]
+      ];
       icons.forEach(([suffix, dir]) => {
         fs.readdirSync(path.join(iconsDir, dir)).forEach((file) => {
-          let name = path.basename(file, '.svg') + suffix
-          values[name] = { name, fullPath: path.join(iconsDir, dir, file) }
-        })
-      })
+          let name = path.basename(file, '.svg') + suffix;
+          values[name] = { name, fullPath: path.join(iconsDir, dir, file) };
+        });
+      });
       matchComponents(
         {
           hero: ({ name, fullPath }) => {
             let content = fs
               .readFileSync(fullPath)
               .toString()
-              .replace(/\r?\n|\r/g, '')
+              .replace(/\r?\n|\r/g, '');
             return {
               [`--hero-${name}`]: `url('data:image/svg+xml;utf8,${content}')`,
               '-webkit-mask': `var(--hero-${name})`,
@@ -36,30 +36,30 @@ module.exports = plugin.withOptions(function (options = {}) {
               display: 'inline-block',
               width: theme('spacing.5'),
               height: theme('spacing.5'),
-            }
+            };
           },
         },
         { values },
-      )
+      );
     }
 
-    addVariant('phx-no-feedback', ['.phx-no-feedback&', '.phx-no-feedback &'])
+    addVariant('phx-no-feedback', ['.phx-no-feedback&', '.phx-no-feedback &']);
     addVariant('phx-click-loading', [
       '.phx-click-loading&',
       '.phx-click-loading &',
-    ])
+    ]);
     addVariant('phx-submit-loading', [
       '.phx-submit-loading&',
       '.phx-submit-loading &',
-    ])
+    ]);
     addVariant('phx-change-loading', [
       '.phx-change-loading&',
       '.phx-change-loading &',
-    ])
-    addVariant('has-errors', '&.has-errors')
-    addVariant('selected', '&[selected]')
-    addVariant('aria-selected', '&[aria-selected]')
-    addVariant('aria-checked', '&[aria-checked]')
+    ]);
+    addVariant('has-errors', '&.has-errors');
+    addVariant('selected', '&[selected]');
+    addVariant('aria-selected', '&[aria-selected]');
+    addVariant('aria-checked', '&[aria-checked]');
 
     if (options.addBase) {
       addBase({
@@ -105,7 +105,7 @@ module.exports = plugin.withOptions(function (options = {}) {
           '@apply antialiased bg-white dark:bg-gradient-to-tr dark:from-slate-900 dark:to-slate-800':
             {},
         },
-      })
+      });
     }
-  }
-})
+  };
+});
