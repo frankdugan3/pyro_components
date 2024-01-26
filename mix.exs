@@ -121,6 +121,7 @@ defmodule PyroComponents.MixProject do
       {:ecto, "~> 3.11"},
       {:pyro, "~> 0.3"},
       # {:pyro, github: "frankdugan3/pyro", branch: "main"},
+      # {:pyro, path: "../pyro"},
       {:jason, "~> 1.4"},
       # These dependencies add optional features if installed
       {:makeup, "~> 1.1", optional: true},

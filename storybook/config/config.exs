@@ -35,7 +35,7 @@ config :pyro_components_storybook, PyroComponentsStorybookWeb.Endpoint,
   ]
 
 config :esbuild,
-  version: "0.17.11",
+  version: "0.19.12",
   default: [
     args:
       ~w(js/app.js js/storybook.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
@@ -44,7 +44,7 @@ config :esbuild,
   ]
 
 config :tailwind,
-  version: "3.3.2",
+  version: "3.4.1",
   default: [
     args: ~w(
       --config=tailwind.config.js
