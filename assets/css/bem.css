@@ -5,25 +5,25 @@
 
 /* Core.button */
 .pyro_button {
-  @apply relative text-center font-medium inline-block cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 appearance-none select-none whitespace-nowrap active:opacity-50 focus:outline-none focus:ring-4 border-solid border-2 rounded-lg;
+  @apply relative text-center inline-block cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 appearance-none select-none whitespace-nowrap active:opacity-50 focus:outline-none focus:ring-4 border-solid border-2 rounded shadow shadow-slate-700/10 dark:shadow-slate-950/100;
   /* base size */
-  @apply px-5 py-2.5 text-sm;
+  @apply px-5 py-1.5 text-base;
 }
 /* sizes */
 .pyro_button--xs {
-  @apply px-3 py-2 text-xs;
+  @apply px-2 py-px text-xs;
 }
 
 .pyro_button--sm {
-  @apply px-3 py-2 text-sm;
+  @apply px-3 py-1 text-sm;
 }
 
 .pyro_button--lg {
-  @apply px-5 py-3 text-base;
+  @apply px-5 py-2.5 text-base;
 }
 
 .pyro_button--xl {
-  @apply px-6 py-3.5 text-base;
+  @apply px-6 py-3.5 font-semibold text-lg;
 }
 /* colors -- set all colored options, then override with variant */
 .pyro_button--slate {
@@ -142,7 +142,10 @@
 
 /* Core.error */
 .pyro_error {
-  @apply phx-no-feedback:hidden flex gap-1 text-sm leading-6 text-red-600 dark:text-red-500;
+  @apply phx-no-feedback:hidden text-sm leading-6 text-white border border-red-500 bg-red-950 p-2 rounded-lg absolute z-10 shadow-slate-700/10 dark:shadow-slate-950/100 shadow-lg mt-1;
+}
+.pyro_error__wrapper {
+  @apply relative h-0;
 }
 
 .pyro_error__icon {
@@ -273,10 +276,11 @@
 
 /* Core.header */
 .pyro_header {
+  @apply grid;
 }
 
 .pyro_header__actions {
-  @apply flex items-center justify-between gap-6;
+  @apply flex items-center justify-end gap-2;
 }
 
 .pyro_header__title {
@@ -294,7 +298,7 @@
 
 /* Core.input */
 .pyro_input {
-  @apply grid gap-1 content-start;
+  @apply grid gap-1 content-start relative;
 }
 
 .pyro_input__input {
@@ -354,6 +358,42 @@ textarea.pyro_input__input {
 /* Core.modal */
 .pyro_modal {
   @apply relative z-50 hidden;
+}
+
+.pyro_modal__backdrop {
+  @apply fixed inset-0 backdrop-blur-sm;
+}
+
+.pyro_modal__dialog {
+  @apply fixed inset-0 overflow-y-auto;
+}
+
+.pyro_modal__wrapper {
+  @apply flex min-h-full items-start justify-center;
+}
+
+.pyro_modal__container {
+  @apply w-full max-w-3xl p-4 sm:p-6 lg:py-8;
+}
+
+.pyro_modal__focus {
+  @apply shadow-slate-700/10 dark:shadow-slate-950/100 ring-slate-700/10 relative hidden rounded-lg bg-white dark:bg-gradient-to-tr dark:from-slate-900 dark:to-slate-800 p-8 shadow-lg ring-1 transition;
+}
+
+.pyro_modal__close_button {
+  @apply absolute top-2 right-2;
+}
+
+/* .pyro_modal__title {
+  @apply ;
+} */
+
+.pyro_modal__subtitle {
+  @apply mt-2 text-sm leading-6 text-zinc-600;
+}
+
+.pyro_modal__actions {
+  @apply ml-6 mb-4 flex items-center gap-5;
 }
 
 /* Core.table */
@@ -872,6 +912,10 @@ textarea.pyro_input__input {
 /* Autocomplete */
 .pyro_autocomplete {
   @apply grid gap-1 content-start;
+}
+
+.pyro_autocomplete__listbox {
+  @apply relative;
 }
 
 .pyro_autocomplete__listbox {

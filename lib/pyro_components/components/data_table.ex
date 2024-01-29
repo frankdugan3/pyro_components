@@ -70,6 +70,7 @@ defmodule PyroComponents.Components.DataTable do
           </.cell>
         </tr>
       </tbody>
+      <%!-- TODO: This currently is an invisible layer that prevents pressing buttons underneath it, very confusing UX! --%>
       <tfoot>
         <tr>
           <td class={@footer_class} colspan={length(@col) + if @action != [], do: 1, else: 0}>

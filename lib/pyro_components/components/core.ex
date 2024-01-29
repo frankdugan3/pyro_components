@@ -273,6 +273,7 @@ defmodule PyroComponents.Components.Core do
   attr :source, :string, required: true, doc: "the code snippet"
   attr :id, :string, required: true
   attr :copy, :boolean, overridable: true, required: true
+  attr :copy_icon, :string, overridable: true, required: true
   attr :copy_label, :string, overridable: true, required: true
   attr :copy_message, :string, overridable: true
 
@@ -291,7 +292,7 @@ defmodule PyroComponents.Components.Core do
     assigns = assign_overridables(assigns)
 
     ~H"""
-    <code class={@class} phx-no-format><.copy_to_clipboard :if={@copy} id={@id <> "-copy-btn"} value={@source} message={@copy_message} label={@copy_label} icon_name="hero-code-bracket" class={@copy_class} /><%= format_code(@source, @language) %></code>
+    <code class={@class} phx-no-format><.copy_to_clipboard :if={@copy} id={@id <> "-copy-btn"} value={@source} message={@copy_message} label={@copy_label} icon_name={@copy_icon} class={@copy_class} /><%= format_code(@source, @language) %></code>
     """
   end
 
@@ -322,7 +323,7 @@ defmodule PyroComponents.Components.Core do
   > This requires several things to work:
   >   - `darkMode: 'class'` in your Tailwind config
   >   - `color_scheme_switcher_js/1` added to the page's `<head>` before `app.js`
-  >   - Pyro's `PyroColorSchemeHook` hook added to your hooks in `app.js`
+  >   - Pyro's `PyroColorScheme` hook added to your hooks in `app.js`
 
   ## Examples
 
@@ -358,12 +359,7 @@ defmodule PyroComponents.Components.Core do
     assigns = assign_overridables(assigns)
 
     ~H"""
-    <.button
-      id={Ecto.UUID.generate()}
-      class={@class}
-      phx-hook="PyroColorSchemeHook"
-      data-scheme={@scheme}
-    >
+    <.button id={Ecto.UUID.generate()} class={@class} phx-hook="PyroColorScheme" data-scheme={@scheme}>
       <div class="color-scheme-system-icon">
         <.icon name={@icon_system} />
         <span :if={@show_labels}><%= @label_system %></span>
@@ -537,24 +533,27 @@ defmodule PyroComponents.Components.Core do
 
   attr :overrides, :list, default: nil, doc: @overrides_attr_doc
 
+  attr :errors, :list, required: true
+
   attr :icon_name, :string,
     overridable: true,
     required: true,
     doc: "the name of the icon; see `icon/1` for details"
 
   attr :class, :css_classes, overridable: true
+  attr :wrapper_class, :css_classes, overridable: true
   attr :icon_class, :css_classes, overridable: true
-
-  slot :inner_block, required: true
 
   def error(assigns) do
     assigns = assign_overridables(assigns)
 
     ~H"""
-    <p class={@class}>
-      <.icon overrides={@overrides} name={@icon_name} class={@icon_class} />
-      <%= render_slot(@inner_block) %>
-    </p>
+    <div class={@wrapper_class}>
+      <p :for={msg <- @errors} class={@class}>
+        <.icon overrides={@overrides} name={@icon_name} class={@icon_class} />
+        <%= msg %>
+      </p>
+    </div>
     """
   end
 
@@ -917,7 +916,7 @@ defmodule PyroComponents.Components.Core do
         />
         <%= @label %>
       </label>
-      <.error :for={msg <- @errors} overrides={@overrides}><%= msg %></.error>
+      <.error errors={@errors} overrides={@overrides} />
     </div>
     """
   end
@@ -962,7 +961,7 @@ defmodule PyroComponents.Components.Core do
       <p :if={@description} class={@description_class}>
         <%= @description %>
       </p>
-      <.error :for={msg <- @errors} overrides={@overrides}><%= msg %></.error>
+      <.error errors={@errors} overrides={@overrides} />
     </div>
     """
   end
@@ -986,7 +985,7 @@ defmodule PyroComponents.Components.Core do
       <p :if={@description} class={@description_class}>
         <%= @description %>
       </p>
-      <.error :for={msg <- @errors} overrides={@overrides}><%= msg %></.error>
+      <.error errors={@errors} overrides={@overrides} />
     </div>
     """
   end
@@ -1002,13 +1001,15 @@ defmodule PyroComponents.Components.Core do
         phx-keydown={!@clear_on_escape || JS.dispatch("pyro:clear")}
         phx-key={!@clear_on_escape || "Escape"}
         phx-mounted={!@autofocus || JS.focus()}
+        phx-hook="PyroMaintainAttrs"
+        data-attrs="style"
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
       <%= render_slot(@inner_block) %>
       <p :if={@description} class={@description_class}>
         <%= @description %>
       </p>
-      <.error :for={msg <- @errors} overrides={@overrides}><%= msg %></.error>
+      <.error errors={@errors} overrides={@overrides} />
     </div>
     """
   end
@@ -1028,7 +1029,7 @@ defmodule PyroComponents.Components.Core do
       <p :if={@description} class={@description_class}>
         <%= @description %>
       </p>
-      <.error :for={msg <- @errors} overrides={@overrides}><%= msg %></.error>
+      <.error errors={@errors} overrides={@overrides} />
     </div> --%>
     """
   end
@@ -1052,7 +1053,7 @@ defmodule PyroComponents.Components.Core do
       <p :if={@description} class={@description_class}>
         <%= @description %>
       </p>
-      <.error :for={msg <- @errors} overrides={@overrides}><%= msg %></.error>
+      <.error errors={@errors} overrides={@overrides} />
     </div>
     """
   end
@@ -1138,6 +1139,16 @@ defmodule PyroComponents.Components.Core do
   attr :show_js, :any, overridable: true, required: true
   attr :hide_js, :any, overridable: true, required: true
   attr :class, :css_classes, overridable: true
+  attr :backdrop_class, :css_classes, overridable: true
+  attr :dialog_class, :css_classes, overridable: true
+  attr :wrapper_class, :css_classes, overridable: true
+  attr :container_class, :css_classes, overridable: true
+  attr :focus_class, :css_classes, overridable: true
+  attr :close_button_class, :css_classes, overridable: true
+  attr :close_button_icon, :string, overridable: true, required: true
+  attr :title_class, :css_classes, overridable: true
+  attr :subtitle_class, :css_classes, overridable: true
+  attr :actions_class, :css_classes, overridable: true
   slot :inner_block, required: true
   slot :title
   slot :subtitle
@@ -1155,66 +1166,56 @@ defmodule PyroComponents.Components.Core do
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       class={@class}
     >
-      <div id={"#{@id}-bg"} class="fixed inset-0 bg-zinc-50/90 transition-opacity" aria-hidden="true" />
+      <div id={"#{@id}-bg"} class={@backdrop_class} aria-hidden="true" />
       <div
-        class="fixed inset-0 overflow-y-auto"
+        class={@dialog_class}
         aria-labelledby={"#{@id}-title"}
         aria-describedby={"#{@id}-description"}
         role="dialog"
         aria-modal="true"
         tabindex="0"
       >
-        <div class="flex min-h-full items-center justify-center">
-          <div class="w-full max-w-3xl p-4 sm:p-6 lg:py-8">
+        <div class={@wrapper_class}>
+          <div class={@container_class}>
             <.focus_wrap
               id={"#{@id}-container"}
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-white p-14 shadow-lg ring-1 transition"
+              class={@focus_class}
             >
-              <div class="absolute top-6 right-5">
-                <button
-                  phx-click={JS.exec("data-cancel", to: "##{@id}")}
-                  type="button"
-                  class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
-                  aria-label={gettext("close")}
-                >
-                  <.icon name="hero-x-mark-solid" class="h-5 w-5" />
-                </button>
-              </div>
+              <.button
+                phx-click={JS.exec("data-cancel", to: "##{@id}")}
+                aria-label={gettext("close")}
+                color="red"
+                size="xs"
+                class={@close_button_class}
+              >
+                <.icon name={@close_button_icon} />
+              </.button>
               <div id={"#{@id}-content"}>
                 <header :if={@title != []}>
-                  <h1 id={"#{@id}-title"} class={@header_title_class}>
+                  <h1 id={"#{@id}-title"} class={@title_class}>
                     <%= render_slot(@title) %>
                   </h1>
-                  <p
-                    :if={@subtitle != []}
-                    id={"#{@id}-description"}
-                    class="mt-2 text-sm leading-6 text-zinc-600"
-                  >
+                  <p :if={@subtitle != []} id={"#{@id}-description"} class={@subtitle_class}>
                     <%= render_slot(@subtitle) %>
                   </p>
                 </header>
                 <%= render_slot(@inner_block) %>
-                <div :if={@confirm != [] or @cancel != []} class="ml-6 mb-4 flex items-center gap-5">
+                <div :if={@confirm != [] or @cancel != []} class={@actions_class}>
                   <.button
                     :for={confirm <- @confirm}
-                    overrides={@overrides}
                     id={"#{@id}-confirm"}
+                    overrides={@overrides}
                     phx-click={@on_confirm}
                     phx-disable-with
-                    class="py-2 px-3"
                   >
                     <%= render_slot(confirm) %>
                   </.button>
-                  <.link
-                    :for={cancel <- @cancel}
-                    phx-click={apply(@hide_js, [@on_cancel, @id])}
-                    class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-                  >
+                  <.button :for={cancel <- @cancel} phx-click={apply(@hide_js, [@on_cancel, @id])}>
                     <%= render_slot(cancel) %>
-                  </.link>
+                  </.button>
                 </div>
               </div>
             </.focus_wrap>

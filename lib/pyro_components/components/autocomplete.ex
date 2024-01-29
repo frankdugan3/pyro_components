@@ -64,6 +64,10 @@ defmodule PyroComponents.Components.Autocomplete do
     overridable: true,
     doc: "class of the input element"
 
+  attr :listbox_wrapper_class, :css_classes,
+    overridable: true,
+    doc: "class of the listbox wrapper element"
+
   attr :listbox_class, :css_classes,
     overridable: true,
     doc: "class of the listbox element"
@@ -112,7 +116,7 @@ defmodule PyroComponents.Components.Autocomplete do
         data-select-on-focus
         autocomplete="off"
       />
-      <div :if={expanded?(@results, @search, @saved_label)} class="relative">
+      <div :if={expanded?(@results, @search, @saved_label)} class={@listbox_wrapper_class}>
         <ul id={@id <> "-listbox"} role="listbox" class={@listbox_class}>
           <li
             :for={{option, i} <- Enum.with_index(@results)}
@@ -141,7 +145,7 @@ defmodule PyroComponents.Components.Autocomplete do
       <p :if={@description} class={@description_class}>
         <%= @description %>
       </p>
-      <.error :for={msg <- @errors} overrides={@overrides}><%= msg %></.error>
+      <.error errors={@errors} overrides={@overrides} />
     </div>
     """
   end

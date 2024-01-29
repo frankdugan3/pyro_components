@@ -131,6 +131,7 @@ defmodule PyroComponents.Overrides.BEM do
     set :class, @prefixed_code <> " makeup"
     set :copy_class, @prefixed_code <> "__copy"
     set :copy, true
+    set :copy_icon, "hero-code-bracket"
     set :copy_label, "Copy"
   end
 
@@ -165,6 +166,7 @@ defmodule PyroComponents.Overrides.BEM do
   @prefixed_error @prefix <> "error"
   override PyroComponents.Components.Core, :error do
     set :class, @prefixed_error
+    set :wrapper_class, @prefixed_error <> "__wrapper"
     set :icon_class, @prefixed_error <> "__icon"
     set :icon_name, "hero-exclamation-circle-mini"
   end
@@ -187,8 +189,8 @@ defmodule PyroComponents.Overrides.BEM do
     set :autoshow, true
     set :close, true
     set :ttl, 10_000
-    set :show_js, &__MODULE__.flash_show_js/2
-    set :hide_js, &__MODULE__.flash_hide_js/2
+    set :show_js, &__MODULE__.hide_modal/2
+    set :hide_js, &__MODULE__.show_modal/2
   end
 
   def flash_title(passed_assigns) do
@@ -211,12 +213,47 @@ defmodule PyroComponents.Overrides.BEM do
     end
   end
 
-  def flash_show_js(js \\ %JS{}, selector) do
-    JS.show(js, to: selector)
+  def show(js \\ %JS{}, selector) do
+    JS.show(js,
+      to: selector,
+      transition:
+        {"transition-all transform ease-out duration-300", "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
+         "opacity-100 translate-y-0 sm:scale-100"}
+    )
   end
 
-  def flash_hide_js(js \\ %JS{}, selector) do
-    JS.hide(js, to: selector)
+  def hide(js \\ %JS{}, selector) do
+    JS.hide(js,
+      to: selector,
+      time: 200,
+      transition:
+        {"transition-all transform ease-in duration-200", "opacity-100 translate-y-0 sm:scale-100",
+         "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}
+    )
+  end
+
+  def show_modal(js \\ %JS{}, id) when is_binary(id) do
+    js
+    |> JS.show(to: "#{id}")
+    |> JS.show(
+      to: "#{id}-bg",
+      transition: {"transition-all transform ease-out duration-300", "opacity-0", "opacity-100"}
+    )
+    |> show("##{id}-container")
+    |> JS.add_class("overflow-hidden", to: "body")
+    |> JS.focus_first(to: "##{id}-content")
+  end
+
+  def hide_modal(js \\ %JS{}, id) do
+    js
+    |> JS.hide(
+      to: "#{id}-bg",
+      transition: {"transition-all transform ease-in duration-200", "opacity-100", "opacity-0"}
+    )
+    |> hide("#{id}-container")
+    |> JS.hide(to: "#{id}", transition: {"block", "block", "hidden"})
+    |> JS.remove_class("overflow-hidden", to: "body")
+    |> JS.pop_focus()
   end
 
   override PyroComponents.Components.Core, :flash_group do
@@ -262,8 +299,19 @@ defmodule PyroComponents.Overrides.BEM do
     set :dd_class, @prefixed_list <> "__dd"
   end
 
+  @prefixed_modal @prefix <> "modal"
   override PyroComponents.Components.Core, :modal do
-    set :class, @prefix <> "modal"
+    set :class, @prefixed_modal
+    set :backdrop_class, @prefixed_modal <> "__backdrop"
+    set :dialog_class, @prefixed_modal <> "__dialog"
+    set :wrapper_class, @prefixed_modal <> "__wrapper"
+    set :container_class, @prefixed_modal <> "__container"
+    set :focus_class, @prefixed_modal <> "__focus"
+    set :close_button_class, @prefixed_modal <> "__close_button"
+    set :close_button_icon, "hero-x-mark-solid"
+    set :title_class, @prefixed_modal <> "__title"
+    set :subtitle_class, @prefixed_modal <> "__subtitle"
+    set :actions_class, @prefixed_modal <> "__actions"
     set :show_js, &__MODULE__.modal_show_js/2
     set :hide_js, &__MODULE__.modal_hide_js/2
   end
@@ -574,6 +622,7 @@ defmodule PyroComponents.Overrides.BEM do
     set :class, @prefixed_autocomplete
     set :input_class, &__MODULE__.input_class/1
     set :description_class, @prefixed_input <> "__description"
+    set :listbox_wrapper_class, @prefixed_autocomplete <> "__listbox_wrapper"
     set :listbox_class, @prefixed_autocomplete <> "__listbox"
     set :listbox_option_class, @prefixed_autocomplete <> "__listbox_option"
     set :throttle_time, 212

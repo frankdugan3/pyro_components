@@ -91,7 +91,26 @@ export async function sendTimezoneToServer() {
 // ####    H O O K S
 // #############################################################################
 
-export const PyroColorSchemeHook = {
+export const PyroMaintainAttrs = {
+  attrs() {
+    return this.el.getAttribute('data-attrs').split(',');
+  },
+  mounted() {
+    // validateDataset(['attrs'], this.el);
+    // handleInputMountFlags(this.el);
+  },
+  beforeUpdate() {
+    this.prevAttrs = this.attrs().map((name) => [
+      name,
+      this.el.getAttribute(name),
+    ]);
+  },
+  updated() {
+    this.prevAttrs.forEach(([name, val]) => this.el.setAttribute(name, val));
+  },
+};
+
+export const PyroColorScheme = {
   mounted() {
     this.init(this.el.getAttribute('data-scheme'));
   },
@@ -321,11 +340,12 @@ export const PyroCopyToClipboard = {
 };
 
 export const hooks = {
-  PyroColorSchemeHook,
+  PyroColorScheme,
   PyroFlashComponent,
   PyroNudgeIntoView,
   PyroAutocompleteComponent,
   PyroCopyToClipboard,
+  PyroMaintainAttrs,
 };
 
 export function nudge(el) {
