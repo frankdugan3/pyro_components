@@ -4,7 +4,7 @@ defmodule PyroComponents.Components.Autocomplete do
   """
   use Pyro.LiveComponent
 
-  import PyroComponents.Components.Core, only: [error: 1, label: 1]
+  import PyroComponents.Components.Core, only: [error: 1, label: 1, input: 1]
   # import Pyro.Gettext
 
   @doc """
@@ -27,18 +27,16 @@ defmodule PyroComponents.Components.Autocomplete do
   """
 
   attr :overrides, :list, default: nil, doc: @overrides_attr_doc
+  attr :type, :atom, values: [:map, :id], default: :id
   attr :throttle_time, :integer, overridable: true, required: true
   attr :option_label_key, :atom, overridable: true, required: true
   attr :option_value_key, :atom, overridable: true, required: true
   attr :prompt, :string, overridable: true, required: true, doc: "the prompt for search input"
   attr :description, :string, default: nil
   attr :errors, :list, default: []
-  attr :label, :string, default: nil
-  attr :input_id, :any, default: nil
+  attr :label, :string, default: nil, doc: "the label for the input (not the label key value of the record)"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
   attr :required, :boolean, default: false
-  attr :name, :any
-  attr :value, :any
 
   attr :search_fn, :any,
     required: true,
@@ -92,7 +90,30 @@ defmodule PyroComponents.Components.Autocomplete do
       phx-click-away={expanded?(@results, @search, @saved_label) && "cancel"}
       phx-target={@myself}
     >
-      <input type="hidden" id={@input_id || @name} name={@name} value={@value} />
+      <.input
+        :if={@type == :id}
+        type="hidden"
+        data-autocomplete-id={@id <> "search"}
+        data-value-key={@option_value_key}
+        field={@field}
+        value={@value}
+      />
+      <%= if @type == :map do %>
+        <input
+          type="hidden"
+          name={"#{@field.name}[#{@option_value_key}]"}
+          data-autocomplete-id={@id <> "search"}
+          data-value-key={@option_value_key}
+          value={@value}
+        />
+        <input
+          type="hidden"
+          name={"#{@field.name}[#{@option_label_key}]"}
+          data-autocomplete-id={@id <> "search"}
+          data-label-key={@option_label_key}
+          value={@saved_label}
+        />
+      <% end %>
       <.label for={@id <> "-search"} overrides={@overrides}><%= @label %></.label>
       <input
         id={@id <> "-search"}
@@ -107,7 +128,9 @@ defmodule PyroComponents.Components.Autocomplete do
         phx-hook="PyroAutocompleteComponent"
         phx-target={@myself}
         data-myself={@myself}
-        data-input-id={@input_id || @name}
+        data-type={@type}
+        data-option-value-key={@option_value_key}
+        data-option-label-key={@option_label_key}
         data-selected-index={@selected_index}
         data-results-count={length(@results)}
         data-saved-label={@saved_label}
@@ -163,34 +186,41 @@ defmodule PyroComponents.Components.Autocomplete do
   end
 
   @impl true
-  def update(%{field: %Phoenix.HTML.FormField{} = field} = assigns, %{assigns: %{field: :unset}} = socket) do
+  def update(%{field: %{value: value} = field, type: :id} = assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(field: nil, input_id: assigns[:input_id] || field.id)
      |> assign(:errors, Enum.map(field.errors, &translate_error(&1)))
-     |> assign_new(:name, fn ->
-       if assigns[:multiple], do: field.name <> "[]", else: field.name
-     end)
-     |> assign_new(:value, fn -> field.value end)
+     |> assign(:value, value)
+     |> assign(:saved_value, value)
+     |> assign(:selected_index, -1)
+     |> assign(:results, [])
      |> assign_label()}
   end
 
   @impl true
-  def update(%{field: %{value: value}} = assigns, %{assigns: %{value: old_value}} = socket) when value !== old_value do
-    {:ok,
-     socket
-     |> assign(assigns)
-     |> assign(:selected_index, -1)
-     |> assign(:value, value)
-     |> assign_label()}
-  end
+  def update(
+        %{
+          field: %{value: [%{data: data, params: params}]} = field,
+          type: :map,
+          option_label_key: option_label_key,
+          option_value_key: option_value_key
+        } = assigns,
+        socket
+      ) do
+    label = Map.get(params, Atom.to_string(option_label_key)) || Map.get(data, option_label_key)
+    value = Map.get(params, Atom.to_string(option_value_key)) || Map.get(data, option_value_key)
 
-  def update(assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign_label()}
+     |> assign(:errors, Enum.map(field.errors, &translate_error(&1)))
+     |> assign(:saved_label, label)
+     |> assign(:search, label)
+     |> assign(:value, value)
+     |> assign(:saved_value, value)
+     |> assign(:selected_index, -1)
+     |> assign(:results, [])}
   end
 
   @impl true
@@ -228,8 +258,8 @@ defmodule PyroComponents.Components.Autocomplete do
      socket
      |> assign(:search, label)
      |> assign(:value, value)
-     |> assign(:saved_label, label)
      |> assign(:saved_value, value)
+     |> assign(:saved_label, label)
      |> assign(:selected_index, -1)
      |> assign(:results, [])}
   end

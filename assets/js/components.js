@@ -209,8 +209,9 @@ export const PyroAutocompleteComponent = {
     };
 
     const pick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       const i = selectedIndex();
-      const input_el = document.getElementById(this.el.dataset.inputId);
       let label = '';
       let value = '';
 
@@ -220,18 +221,33 @@ export const PyroAutocompleteComponent = {
         value = option.dataset.value;
       }
 
-      e.preventDefault();
-      e.stopPropagation();
       this.el.value = label;
       this.el.focus();
+
+      id = this.el.id;
+      valueKey = this.el.dataset.optionValueKey;
+      labelKey = this.el.dataset.optionLabelKey;
+
       selectValue(this.el);
+
+      const labelEl = document.querySelector(
+        `input[type=hidden][data-label-key=${labelKey}]`,
+      );
+
+      if (labelEl) {
+        labelEl.value = label;
+      }
+      const valueEl = document.querySelector(
+        `input[type=hidden][data-value-key=${valueKey}]`,
+      );
+      valueEl.value = value;
+
       this.pushEventTo(this.el.dataset.myself, 'pick', {
         label,
         value,
       });
 
-      input_el.value = value;
-      input_el.dispatchEvent(new Event('input', { bubbles: true }));
+      valueEl.dispatchEvent(new Event('input', { bubbles: true }));
 
       return false;
     };

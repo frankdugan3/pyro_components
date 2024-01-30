@@ -911,15 +911,15 @@ textarea.pyro_input__input {
 
 /* Autocomplete */
 .pyro_autocomplete {
-  @apply grid gap-1 content-start;
+  @apply grid gap-2 content-start;
+}
+
+.pyro_autocomplete__listbox_wrapper {
+  @apply relative h-0;
 }
 
 .pyro_autocomplete__listbox {
-  @apply relative;
-}
-
-.pyro_autocomplete__listbox {
-  @apply absolute z-10 grid content-start top-0 left-0 sm:text-sm sm:leading-6 bg-white text-slate-900 dark:bg-gradient-to-tr dark:from-slate-900 dark:to-slate-800 dark:text-white border border-slate-300 rounded-lg shadow-lg;
+  @apply absolute z-20 grid content-start sm:text-sm sm:leading-6 bg-white text-slate-900 dark:bg-gradient-to-tr dark:from-slate-900 dark:to-slate-800 dark:text-white border border-slate-300 rounded-lg shadow-lg mt-1;
 }
 
 .pyro_autocomplete__listbox_option {
