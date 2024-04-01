@@ -18,8 +18,8 @@ defmodule PyroComponents.Components.Autocomplete do
           id="fiend_id_autocomplete"
           field={@form[:friend_id]}
           label="Friend"
-          search_fn={search_friends/1}
-          lookup_fn={lookup_friend/1} />
+          search_fn={&search_friends/1}
+          lookup_fn={&lookup_friend/1} />
         <:actions>
           <.button>Save</.button>
         </:actions>
