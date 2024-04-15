@@ -26,7 +26,7 @@ defmodule PyroComponentsStorybook.MixProject do
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:gettext, "~> 0.20"},
       {:heroicons,
-       github: "tailwindlabs/heroicons", tag: "v2.1.1", app: false, compile: false, sparse: "optimized", override: true},
+       github: "tailwindlabs/heroicons", tag: "v2.1.3", app: false, compile: false, sparse: "optimized", override: true},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_storybook, "~> 0.6.0"},
       {:pyro_components, path: "../"},
