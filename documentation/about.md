@@ -1,38 +1,25 @@
 # About
 
+[![hex.pm](https://img.shields.io/hexpm/l/pyro_components.svg)](https://hex.pm/packages/pyro_components)
+[![hex.pm](https://img.shields.io/hexpm/v/pyro_components.svg)](https://hex.pm/packages/pyro_components)
+[![hex.pm](https://img.shields.io/hexpm/dt/pyro_components.svg)](https://hex.pm/packages/pyro_components)
+[![github.com](https://img.shields.io/github/last-commit/frankdugan3/pyro_components.svg)](https://github.com/frankdugan3/pyro_components)
+
+> Extensible Phoenix components, built with Pyro.
+
 Pyro is a suite of libraries for building UI in Phoenix.
 
-- [Pyro](https://hexdocs.pm/pyro)
+> #### Experimental Library {: .warning}
+>
+> PyroComponents is in early development, expect breaking changes.
 
-  Component tooling for Phoenix.
-
-  - Customizable "overrides" system for granularly customizable themes
-  - Extended component attributes, e.g. CSS merging
-
-- [PyroComponents](https://hexdocs.pm/pyro_components)
-
-  Ready-made Phoenix components, built with pyro.
-
-  - Heex component library
-  - Overrides presets to get started quickly while allowing deep customization
-
-- [AshPyro](https://hexdocs.pm/ash_pyro)
-
-  Declarative UI for Ash Framework.
-
-  - Ash extensions providing a declarative UI DSL
-
-- [AshPyroComponents](https://hexdocs.pm/ash_pyro_components)
-
-  Components that automatically render PyroComponents declaratively via AshPyro.
-
-To install PyroComponents and use them in your Phoenix app, follow the [Get Started](get-started.html) guide. For the other features, please see the "Get Started" guide for the appropriate library instead.
+To install PyroComponents and learn how it works, start at the [Get Started](get-started.html) guide and work your way through the tutorials. They are ordered in a sensible way to explain the various features Pyro offers, and point toward other tools in the Pyro suite when appropriate.
 
 ## What "problem" is it solving?
 
-The default model of Phoenix is to generate, then customize. While this does provide great isolation, I have found it pretty tedious to repeatedly make very similar copy & paste boilerplate changes to the generated code every time I create a new Phoenix app. Additionally, some things (like timezone localization) are quite complicated and it would be nice for them to be handled by a library that is updated with future improvements. Copy & pasting boilerplate will lead to maintenance burdens down the road.
+Component libraries generally suffer from a lack of extensibility. Because of this, there tends to be a substantial churn to add features and configuration options that leads to bloat and maintenance pain. On the other hand, minimalist libraries tend to leave a lot of boilerplate work for the consumer. Symptoms like this are why `phx.new` opts to generate a `core_components.ex` file for you customize. It's a great start, but requires a ton of customization to do much of anything.
 
-The tricky part is handling all the bespoke features in each app while sharing as much as possible. The goal is to provide a wide array of tooling, helpers and components with sane defaults, while allowing very granular overrides and optional libraries. By separating each level of features, you can choose which parts of Pyro to leverage, and which to implement yourself.
+Pyro aims to provide a middle ground: Components that can be *extended*. It leverages a DSL to describe how a component should be built (it's a superset of `Phoenix.Component`'s DSL), and wraps it with "transformers" that merge component libraries together with your customizations to produce a bespoke component library.
 
 ## General Principles
 
@@ -51,3 +38,7 @@ PyroComponents is under-developed. Not all components adhere to every principle,
   - Sensibly enhance UX with JS
 - Responsive
 - Internationalization support via `gettext`
+
+## But wait, there's more!
+
+In addition to these extensible components, there is a [full suite](suite.html) of libraries that build on the foundation Pyro provides.

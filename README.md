@@ -4,33 +4,14 @@
 [![hex.pm](https://img.shields.io/hexpm/dt/pyro_components.svg)](https://hex.pm/packages/pyro_components)
 [![github.com](https://img.shields.io/github/last-commit/frankdugan3/pyro_components.svg)](https://github.com/frankdugan3/pyro_components)
 
-# Pyro
+# PyroComponents
+
+> Extensible Phoenix components, built with Pyro.
 
 Pyro is a suite of libraries for building UI in Phoenix.
 
-- [Pyro](https://github.com/frankdugan3/pyro)
-
-  Component tooling for Phoenix.
-
-  - Customizable "overrides" system for granularly customizable themes
-  - Extended component attributes, e.g. CSS merging
-
-- [PyroComponents](https://github.com/frankdugan3/pyro_components)
-
-  Ready-made Phoenix components, built with pyro.
-
-  - Heex component library
-  - Overrides presets to get started quickly while allowing deep customization
-
-- [AshPyro](https://github.com/frankdugan3/ash_pyro)
-
-  Declarative UI for Ash Framework.
-
-  - Ash extensions providing a declarative UI DSL
-
-- [AshPyroComponents](https://github.com/frankdugan3/ash_pyro_components)
-
-  Components that automatically render PyroComponents declaratively via AshPyro.
+> [!WARNING]
+> PyroComponents is in early development, expect breaking changes.
 
 ## About
 
@@ -38,7 +19,7 @@ For more details on PyroComponents, check out the [About](https://hexdocs.pm/pyr
 
 ## Installation
 
-To install PyroComponents and use them in your Phoenix app, follow the [Get Started](get-started.html) guide. For the other features, please see the "Get Started" guide for the appropriate library instead.
+To install PyroComponents and learn how it works, start at the [Get Started](get-started.html) guide and work your way through the tutorials. They are ordered in a sensible way to explain the various features Pyro offers, and point toward other tools in the Pyro suite when appropriate.
 
 ## Development
 

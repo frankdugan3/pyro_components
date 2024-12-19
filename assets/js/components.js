@@ -129,7 +129,7 @@ export const PyroFlashComponent = {
       `#${this.el.id}-message`,
     ).innerHTML;
     if (this.el.dataset?.autoshow !== undefined) {
-      window.liveSocket.execJS(
+      this.liveSocket.execJS(
         this.el,
         this.el.getAttribute('data-show-exec-js'),
       );
@@ -398,7 +398,7 @@ export function resetHideTTL(self) {
     self.ttlInterval = setInterval(() => {
       self.countdown = self.countdown - 16.7;
       if (self.countdown <= 0) {
-        window.liveSocket.execJS(
+        self.liveSocket.execJS(
           self.el,
           self.el.getAttribute('data-hide-exec-js'),
         );

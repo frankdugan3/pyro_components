@@ -27,11 +27,13 @@ With the above in mind, let's look at some strategies we could apply. Please kee
 
 ## CSS Strategies
 
+### CSS Layers
+
+TODO: Describe this strategy, as it is provided by the default style.
+
 ### BEM
 
 [BEM](https://getbem.com/) has a simple naming pattern for single classes that you apply to every element needing style. This incredibly simple system eliminates class hierarchy/inheritance concerns, and also leaves room for utility/override classes to be used so long as they are defined after the component classes.
-
-PyroComponents provides a BEM overrides file to help you get started using a BEM skin strategy. It provides no style by default, and adds BEM classes to each element of the components. This allows you to create a fully-custom skin with very little friction. Installation and configuration instructions can be found in the module docs for `PyroComponents.Overrides.BEM`.
 
 Pros:
 
@@ -74,9 +76,7 @@ Cons:
 
 ### BEM + Tailwind
 
-Tailwind can also be used with BEM classes. Pyro provides default styles for this strategy, as well as an overrides file that adds all the needed component classes.
-
-Details can be found at `PyroComponents.Overrides.BEM`.
+Tailwind can also be used with BEM classes.
 
 Pros:
 

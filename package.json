@@ -4,7 +4,8 @@
   "license": "MIT",
   "exports": {
     ".": "./assets/js/components.js",
-    "./tailwind-plugin": "./assets/js/tailwind-plugin.js"
+    "./tailwind-plugin": "./assets/js/tailwind-plugin.js",
+    "./tailwind-icons": "./assets/js/tailwind-icons.js"
   },
   "repository": {
     "type": "git",

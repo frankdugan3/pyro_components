@@ -5,7 +5,7 @@ defmodule PyroComponents.Ecto.ZonedDateTime do
   @behaviour Ecto.Type
 
   @doc false
-  def type, do: :utc_datetime_usec
+  def type, do: :"timestamptz(6)"
 
   @doc false
   def cast(nil), do: {:ok, nil}
