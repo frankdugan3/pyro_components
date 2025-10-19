@@ -12,7 +12,7 @@ defmodule PyroComponents.MixProject do
       app: :pyro_components,
       version: @version,
       description: @description,
-      elixir: "~> 1.16",
+      elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       package: package(),
       deps: deps(),
@@ -111,7 +111,8 @@ defmodule PyroComponents.MixProject do
       {:credo, ">= 0.0.0", only: :dev, runtime: false},
       {:dialyxir, ">= 0.0.0", only: :dev, runtime: false},
       {:doctor, ">= 0.0.0", only: :dev, runtime: false},
-      {:ex_check, "~> 0.15", [env: :prod, hex: "ex_check", only: :dev, runtime: false, repo: "hexpm"]},
+      {:ex_check, "~> 0.15",
+       [env: :prod, hex: "ex_check", only: :dev, runtime: false, repo: "hexpm"]},
       {:faker, "~> 0.17", only: [:test, :dev]},
       {:floki, ">= 0.30.0", only: :test},
       {:mix_audit, ">= 0.0.0", only: :dev, runtime: false},
@@ -121,10 +122,11 @@ defmodule PyroComponents.MixProject do
       {:makeup_eex, ">= 0.1.2", only: :docs},
       # Core dependencies
       {:ecto, "~> 3.11"},
+      {:phoenix_live_view, "~> 1.0"},
       # {:pyro, "~> 0.4"},
-      {:pyro, path: "../pyro"},
+      # {:pyro, path: "../pyro"},
       # These dependencies add optional features if installed
-      {:makeup, "~> 1.1", optional: true},
+      # {:makeup, "~> 1.1", optional: true},
       {:tzdata, "~> 1.1.0", optional: true},
       {:tz_extra, "~> 0.26", optional: true}
     ]

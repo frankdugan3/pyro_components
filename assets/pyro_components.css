@@ -1,0 +1,399 @@
+@layer components {
+  [data-pyro-component='badge'] {
+    display: inline-block;
+    user-select: none;
+    padding-inline: calc(var(--spacing) * 2);
+    vertical-align: top;
+    text-align: center;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    font-weight: var(--font-weight-black);
+    color: var(--color-base-background);
+    background-color: var(--color-base-foreground);
+    border-color: var(--color-base-foreground);
+    border-width: 1px;
+    border-radius: var(--radius-sm);
+    &[class*='CLR-'] {
+      background-color: var(--base-color);
+      border-color: var(--accent-color);
+      color: var(--contrast-color);
+    }
+    &.SZ-sm,
+    &.SZ-xs {
+      font-size: var(--text-xs);
+      line-height: var(--text-xs--line-height);
+    }
+  }
+
+  [data-pyro-component='button'],
+  .pyro-button {
+    color: var(--color-base-background);
+    background-color: var(--color-base-foreground);
+    border-color: var(--color-base-foreground);
+    border-width: 1px;
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    padding-inline: calc(var(--spacing) * 3);
+    padding-block: calc(var(--spacing) * 2);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    @variant phx-click-loading {
+      cursor: wait;
+      opacity: 0.75;
+    }
+    &:[disabled] {
+      cursor: not-allowed;
+    }
+    &:hover,
+    &:focus {
+      background-color: var(--accent-color);
+    }
+    &[class*='CLR-'] {
+      background-color: var(--base-color);
+      border-color: var(--accent-color);
+      color: var(--contrast-color);
+      &:hover,
+      &:focus {
+        background-color: var(--accent-color);
+      }
+      &:focus {
+        outline: none;
+        border-color: var(--contrast-color);
+      }
+    }
+    &.SZ-xs {
+      font-size: var(--text-xs);
+      line-height: var(--text-xs--line-height);
+      padding-inline: var(--spacing);
+      padding-block: 1px;
+      border-radius: var(--radius-xs);
+    }
+    &.SZ-sm {
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--line-height);
+      padding-inline: calc(var(--spacing) * 2);
+      padding-block: var(--spacing);
+      border-radius: var(--radius-sm);
+    }
+    &.SZ-lg {
+      font-size: var(--text-lg);
+      line-height: var(--text-lg--line-height);
+    }
+    &.SZ-xl {
+      font-size: var(--text-xl);
+      line-height: var(--text-xl--line-height);
+    }
+  }
+
+  [data-pyro-component='checkgroup'] {
+    column-span: all;
+    .items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing);
+      column-span: all;
+      label,
+      [data-preselected] {
+        border-width: 1px;
+        border-radius: var(--radius-sm);
+        border-color: var(--color-secondary-accent);
+        color: var(--color-secondary-contrast);
+        user-select: none;
+        font-size: var(--text-xs);
+        line-height: var(--text-xs--line-height);
+        padding-inline: calc(var(--spacing) * 2);
+        padding-block: var(--spacing);
+      }
+      label:hover,
+      label:has(input:focus) {
+        border-color: var(--color-secondary-contrast);
+      }
+      label:has(input:checked) {
+        color: var(--color-primary-contrast);
+        border-color: var(--color-primary-contrast);
+        background-color: var(--color-primary);
+      }
+      [data-preselected] {
+        cursor: help;
+        background-color: var(--color-primary);
+        color: var(--color-primary-contrast);
+        border-color: var(--color-primary-accent);
+        &:hover {
+          border-color: var(--color-primary-contrast);
+        }
+      }
+      input[type='checkbox'] {
+        /* TODO: This doesn't quite work. */
+        /* appearance: none; */
+        /* content: '\2713'; */
+        /* color: var(--color-primary-contrast); */
+        vertical-align: middle;
+        margin-right: var(--spacing);
+        width: 1em;
+        height: 1em;
+        accent-color: var(--color-primary);
+        border-width: 1px;
+        border-radius: var(--radius-sm);
+        border-color: var(--color-primary-accent);
+      }
+      input[type='checkbox']:not(:checked):not(:disabled) {
+        /* Hack because of ^ */
+        appearance: none;
+        background-color: var(--color-secondary);
+        border-color: var(--color-secondary-accent);
+      }
+    }
+  }
+
+  [data-pyro-component='error'] {
+    display: flex;
+    color: var(--color-danger-contrast);
+    gap: calc(var(--spacing) * 3);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    margin-top: calc(var(--spacing) * 3);
+  }
+
+  [data-pyro-component='input'] {
+    appearance: none;
+    outline: none;
+    margin-top: calc(var(--spacing) * 2);
+    padding: calc(var(--spacing) * 2);
+    display: block;
+    width: 100%;
+    border-radius: var(--radius-lg);
+    border-width: 1px;
+    background-color: var(--color-secondary);
+    color: var(--color-secondary-contrast);
+    border-color: var(--color-secondary-accent);
+    &:focus {
+      background-color: var(--color-primary);
+      color: var(--color-primary-contrast);
+      border-color: var(--color-primary-accent);
+    }
+    textarea& {
+      field-sizing: content;
+    }
+    select& {
+      cursor: pointer;
+    }
+    &.has-errors {
+      background-color: var(--color-danger);
+      color: var(--color-danger-contrast);
+      border-color: var(--color-danger-accent);
+    }
+    &[type='checkbox'] {
+      margin-right: var(--spacing);
+      width: 1em;
+      height: 1em;
+      border-radius: 1px;
+      vertical-align: middle;
+      accent-color: var(--color-secondary-contrast);
+    }
+  }
+
+  [data-pyro-component='label'] {
+    display: block;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-base-foreground);
+  }
+
+  [data-pyro-component='pagination'] {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: var(--text-sm);
+    justify-content: start;
+    align-items: center;
+    gap: calc(var(--spacing) * 2);
+    padding: var(--spacing);
+    user-select: none;
+    backdrop-filter: blur(var(--blur-sm));
+  }
+
+  [data-pyro-component='simple_form'] {
+    display: grid;
+    padding: calc(var(--spacing) * 4);
+    & > h1 {
+      font-size: var(--text-3xl);
+      line-height: var(--text-3xl--line-height);
+      font-weight: var(--font-weight-black);
+    }
+    & > .action {
+      display: flex;
+      margin-top: calc(var(--spacing) * 2);
+      gap: calc(var(--spacing) * 6);
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  [data-pyro-component='table'],
+  [data-pyro-component='datatable'] {
+    --base-color: var(--color-secondary);
+    --accent-color: var(--color-secondary-accent);
+    --contrast-color: var(--color-secondary-contrast);
+    border-collapse: separate;
+    caption {
+      font-size: var(--text-3xl);
+      line-height: var(--text-3xl--line-height);
+      text-align: center;
+    }
+    thead,
+    tbody {
+      tr {
+        td,
+        th {
+          border-width: 1px;
+          border-radius: var(--radius-sm);
+          border-style: var(--tw-border-style);
+          padding-inline: calc(var(--spacing) * 1);
+        }
+      }
+    }
+    thead {
+      position: sticky;
+      user-select: none;
+      tr {
+        td,
+        th {
+          padding-block: calc(var(--spacing) * 1);
+          background-color: var(--color-base-background);
+          border-color: var(--color-base-foreground);
+          color: var(--color-base-foreground);
+          &[phx-click='toggle-sort'] {
+            cursor: pointer;
+            /* &:hover { */
+            /*   background-color: var(--color-primary); */
+            /*   color: var(--color-primary-contrast); */
+            /*   border-color: var(--color-primary-accent); */
+            /* } */
+            @variant phx-click-loading {
+              cursor: wait;
+              opacity: 50%;
+            }
+            & > sup {
+              background-color: var(--color-primary);
+              color: var(--color-primary-contrast);
+              border-radius: calc(infinity * 1px);
+              padding-inline: calc(var(--spacing) * 1);
+              padding-block: 1px;
+            }
+          }
+        }
+      }
+    }
+    thead {
+      top: 0;
+    }
+    tfoot {
+      position: sticky;
+      bottom: 0;
+      user-select: none;
+    }
+    tbody {
+      tr {
+        td {
+          background-color: var(--base-color);
+          border-color: var(--accent-color);
+          color: var(--contrast-color);
+          &:hover {
+            background-color: color-mix(
+              in srgb,
+              var(--base-color) 90%,
+              white 10%
+            );
+            border-color: color-mix(
+              in srgb,
+              var(--contrast-color) 90%,
+              white 10%
+            );
+          }
+        }
+      }
+      tr:nth-child(even) {
+        td {
+          background-color: color-mix(in srgb, var(--base-color) 95%, white 5%);
+          border-color: color-mix(in srgb, var(--contrast-color) 95%, white 5%);
+          color: var(--contrast-color);
+          &:hover {
+            background-color: color-mix(
+              in srgb,
+              var(--base-color) 90%,
+              white 10%
+            );
+            border-color: color-mix(
+              in srgb,
+              var(--contrast-color) 90%,
+              white 10%
+            );
+          }
+        }
+      }
+    }
+  }
+
+  [data-pyro-component='tooltip'] {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+    z-index: 10;
+    user-select: none;
+    .tooltip-text {
+      visibility: hidden;
+      position: absolute;
+      z-index: 1;
+      user-select: none;
+      whitespace: pre;
+      color: var(--color-white);
+      font-weight: var(--font-weight-normal);
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--line-height);
+      background-color: color-mix(
+        in oklab,
+        var(--color-secondary) 90%,
+        transparent
+      );
+      border-radius: var(--radius-sm);
+      padding: calc(var(--spacing) * 2);
+    }
+    &:hover .tooltip-text {
+      visibility: visible;
+    }
+  }
+}
+
+/* TODO: Add polyfill: https://www.youtube.com/watch?v=DNXEORSk4GU */
+/* TODO: Add more position fallbacks and test them. */
+@position-try --pyro-dropdown-left {
+  inset: auto;
+  top: anchor(bottom);
+  right: anchor(right);
+}
+
+@layer components {
+  [data-pyro-component='button']:has(+ [data-pyro-component='dropdown']) {
+    anchor-name: --pyro-dropdown-button;
+  }
+
+  [data-pyro-component='dropdown'] {
+    position: absolute;
+    gap: calc(var(--spacing) * 2);
+    padding: calc(var(--spacing) * 2);
+    margin-top: calc(var(--spacing) * 2);
+    border-width: 1px;
+    border-radius: var(--radius-sm);
+    border-color: var(--color-secondary-accent);
+    background-color: var(--color-secondary);
+    color: var(--color-secondary-contrast);
+    position-anchor: --pyro-dropdown-button;
+    inset: auto;
+    bottom: anchor(bottom);
+    left: anchor(right);
+    position-try-fallbacks: --pyro-dropdown-left;
+    &:popover-open {
+      display: grid;
+    }
+  }
+}
