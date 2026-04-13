@@ -29,6 +29,7 @@ pyro-*.tar
 /tmp/
 /.elixir_ls/
 /.elixir-tools/
+/priv/static/hologram/
 
 # Secret files
 *.env

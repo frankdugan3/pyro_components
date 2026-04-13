@@ -1,11 +1,9 @@
 # Used by "mix format"
 [
-  import_deps: [:phoenix, :pyro],
-  plugins: [Phoenix.LiveView.HTMLFormatter, Styler],
+  import_deps: [:hologram, :phoenix, :phoenix_live_view, :pyro],
+  plugins: [Phoenix.LiveView.HTMLFormatter],
   inputs: [
     "*.{heex,ex,exs}",
-    "{config,lib}/**/*.{heex,ex,exs}",
-    "storybook/*.{heex,ex,exs}",
-    "storybook/{config,lib,storybook}/**/*.{heex,ex,exs}"
+    "{config,lib,test}/**/*.{heex,ex,exs,holo}"
   ]
 ]

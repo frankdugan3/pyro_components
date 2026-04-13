@@ -1,3 +1,5 @@
+if String.to_integer(System.otp_release()) < 28, do: Mix.raise("Pyro requires OTP 28+")
+
 defmodule PyroComponents.MixProject do
   @moduledoc false
   use Mix.Project
@@ -12,20 +14,27 @@ defmodule PyroComponents.MixProject do
       app: :pyro_components,
       version: @version,
       description: @description,
-      elixir: "~> 1.16",
+      elixir: "~> 1.19",
       start_permanent: Mix.env() == :prod,
       package: package(),
       deps: deps(),
       docs: docs(),
-      test_paths: ["lib"],
+      test_paths: ["test"],
       name: "PyroComponents",
       source_url: @source_url,
-      elixirc_paths: ["lib"],
+      elixirc_paths: elixirc_paths(Mix.env()),
       aliases: aliases(),
-      compilers: [:yecc] ++ Mix.compilers(),
+      compilers: [:yecc] ++ pre_compilers() ++ Mix.compilers() ++ post_compilers(),
       dialyzer: [plt_add_apps: [:ecto, :mix]]
     ]
   end
+
+  def cli do
+    [preferred_envs: [docs: :docs, "docs.watch": :docs]]
+  end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   defp extras do
     "documentation/**/*.md"
@@ -74,22 +83,20 @@ defmodule PyroComponents.MixProject do
   defp package do
     [
       name: :pyro_components,
-      maintainers: ["Frank Dugan III"],
+      maintainers: ["Frank Polasek Dugan III"],
       licenses: ["MIT"],
       links: %{GitHub: @source_url},
       files:
-        ~w(assets lib documentation) ++
-          ~w(README* CHANGELOG* LICENSE* mix.exs package.json .formatter.exs)
+        ~w(lib documentation) ++
+          ~w(README* CHANGELOG* LICENSE* mix.exs .formatter.exs)
     ]
   end
 
   defp groups_for_modules do
     [
       Core: [
-        PyroComponents
-      ],
-      Overrides: [
-        ~r/\.Overrides\./
+        PyroComponents,
+        PyroComponents.Design
       ],
       Components: [~r/\.Components\./]
     ]
@@ -106,28 +113,41 @@ defmodule PyroComponents.MixProject do
   defp deps do
     [
       # Code quality tooling
-      {:credo, ">= 0.0.0", only: :dev, runtime: false},
+      {:credo, ">= 0.0.0", only: [:dev, :test, :docs], runtime: false},
       {:dialyxir, ">= 0.0.0", only: :dev, runtime: false},
       {:doctor, ">= 0.0.0", only: :dev, runtime: false},
-      {:ex_check, "~> 0.15", [env: :prod, hex: "ex_check", only: :dev, runtime: false, repo: "hexpm"]},
-      {:faker, "~> 0.17", only: [:test, :dev]},
-      {:floki, ">= 0.30.0", only: :test},
+      {:ex_check, ">= 0.0.0",
+       [env: :prod, hex: "ex_check", only: :dev, runtime: false, repo: "hexpm"]},
+      {:usage_rules, ">= 0.0.0", only: :dev},
+      {:lazy_html, "~> 0.1", only: :test},
       {:mix_audit, ">= 0.0.0", only: :dev, runtime: false},
-      {:styler, "~> 0.11", only: [:dev, :test], runtime: false},
+      {:mix_test_interactive, ">= 0.0.0", only: :dev, runtime: false},
       # Build tooling
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:git_ops, "~> 2.6", only: :dev},
+      {:ex_doc, ">= 0.0.0", only: :docs, runtime: false},
+      {:mix_watch_docs, ">= 0.0.0", only: :docs, runtime: false},
+      {:git_ops, ">= 0.0.0", only: :dev},
+      {:makeup, ">= 0.0.0", only: :docs},
+      {:makeup_eex, ">= 0.0.0", only: :docs},
+      {:makeup_html, ">= 0.0.0", only: :docs},
+      {:makeup_elixir, ">= 0.0.0", only: :docs},
       # Core dependencies
-      {:ecto, "~> 3.11"},
-      {:pyro, "~> 0.3"},
+      # {:pyro, "~> 0.4"},
       # {:pyro, github: "frankdugan3/pyro", branch: "main"},
-      # {:pyro, path: "../pyro"},
-      {:jason, "~> 1.4"},
+      {:pyro, path: "../pyro"},
       # These dependencies add optional features if installed
-      {:makeup, "~> 1.1", optional: true},
-      {:tzdata, "~> 1.1.0", optional: true},
-      {:tz_extra, "~> 0.26", optional: true}
+      {:hologram, "~> 0.8", optional: true},
+      {:phoenix_live_view, "~> 1.1", optional: true},
+      {:tzdata, "~> 1.1", optional: true},
+      {:tz_extra, "~> 0.45", optional: true}
     ]
+  end
+
+  defp pre_compilers, do: filter_installed([:phoenix_live_view])
+  defp post_compilers, do: filter_installed([:hologram])
+
+  defp filter_installed(compilers) do
+    installed = Map.keys(Mix.Project.deps_paths())
+    Enum.filter(compilers, &(&1 in installed))
   end
 
   defp aliases do
@@ -137,7 +157,7 @@ defmodule PyroComponents.MixProject do
         "compile",
         "docs"
       ],
-      # until we hit 1.0, we will ensure no major release!
+      # Until we hit 1.0, ensure no major release!
       release: [
         "git_ops.release --no-major"
       ],

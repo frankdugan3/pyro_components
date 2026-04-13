@@ -4,35 +4,7 @@
 [![hex.pm](https://img.shields.io/hexpm/dt/pyro_components.svg)](https://hex.pm/packages/pyro_components)
 [![github.com](https://img.shields.io/github/last-commit/frankdugan3/pyro_components.svg)](https://github.com/frankdugan3/pyro_components)
 
-# Pyro
-
-Pyro is a suite of libraries for building UI in Phoenix.
-
-- [Pyro](https://github.com/frankdugan3/pyro)
-
-  Component tooling for Phoenix.
-
-  - Customizable "overrides" system for granularly customizable themes
-  - Extended component attributes, e.g. CSS merging
-
-- [PyroComponents](https://github.com/frankdugan3/pyro_components)
-
-  Ready-made Phoenix components, built with pyro.
-
-  - Heex component library
-  - Overrides presets to get started quickly while allowing deep customization
-
-- [AshPyro](https://github.com/frankdugan3/ash_pyro)
-
-  Declarative UI for Ash Framework.
-
-  - Ash extensions providing a declarative UI DSL
-
-- [AshPyroComponents](https://github.com/frankdugan3/ash_pyro_components)
-
-  Components that automatically render PyroComponents declaratively via AshPyro.
-
-## About
+# About
 
 For more details on PyroComponents, check out the [About](https://hexdocs.pm/pyro_components/about.html) page.
 
@@ -49,10 +21,3 @@ git clone git@github.com:frankdugan3/pyro_components.git
 cd pyro_components
 mix setup
 ```
-
-For writing docs, there is a handy watcher script that automatically rebuilds/reloads the docs locally: `./watch_docs.sh`
-
-## Prior Art
-
-- [Petal](https://petal.build/components): Petal is an established project with a robust set of components, and served as a substantial inspiration for this project.
-- [Doggo](https://github.com/woylie/doggo): Headless UI components for Phoenix, with an emphasis on semantic HTML and APG guidelines.
